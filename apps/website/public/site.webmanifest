@@ -1,0 +1,18 @@
+{
+  "name": "SourceShot",
+  "short_name": "SourceShot",
+  "description": "Create clean, syntax-highlighted PNG snapshots from source code.",
+  "start_url": "/sourceshot/",
+  "scope": "/sourceshot/",
+  "display": "standalone",
+  "background_color": "#f7f3ed",
+  "theme_color": "#f7f3ed",
+  "icons": [
+    {
+      "src": "/sourceshot/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
