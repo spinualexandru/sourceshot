@@ -4,6 +4,8 @@ Tiny web app for turning source code into clean, shareable image snapshots.
 
 Live site: https://spinualexandru.github.io/sourceshot
 
+<img width="745" height="659" alt="screenshot-min" src="https://github.com/user-attachments/assets/bad934c3-b57d-4ca8-844d-d6bd35f00d3b" />
+
 ## Features
 
 - Syntax highlighting with automatic language detection
