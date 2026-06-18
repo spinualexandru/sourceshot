@@ -9,6 +9,7 @@ catalog:
   vite-plus: ^0.1.24
   shiki: ^4.2.0
   html-to-image: ^1.11.13
+  lit: ^3.3.3
 overrides:
   vite: "catalog:"
 peerDependencyRules:

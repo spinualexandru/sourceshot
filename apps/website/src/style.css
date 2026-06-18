@@ -232,6 +232,14 @@ p {
   box-sizing: border-box;
 }
 
+source-shot-app {
+  display: contents;
+}
+
+source-code-editor {
+  display: block;
+}
+
 code {
   font-family: var(--mono);
   font-size: 16px;
