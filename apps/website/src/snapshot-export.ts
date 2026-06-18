@@ -1,6 +1,7 @@
+import { render } from "lit";
 import { type AppTheme, type CodeLanguage } from "./code-options.ts";
 import { renderCodeHtml } from "./code-highlight.ts";
-import { createCodeWindowMarkup } from "./code-window.ts";
+import { renderCodeWindow } from "./components/code-window.ts";
 import { downloadBlob } from "./blob-actions.ts";
 import { applyThemeProperties } from "./theme.ts";
 
@@ -37,6 +38,11 @@ function waitForLayout() {
   });
 }
 
+async function renderSnapshotCodeWindow(frame: HTMLElement, codeHtml: string) {
+  render(renderCodeWindow({ codeHtml, snapshot: true }), frame);
+  await Promise.resolve();
+}
+
 async function createSnapshotFrame(codeHtml: string, theme: AppTheme) {
   const initialWidth = Math.max(minSnapshotWidth, Math.min(window.innerWidth, maxSnapshotWidth));
   let snapshotPadding = getSnapshotPadding(initialWidth);
@@ -48,7 +54,7 @@ async function createSnapshotFrame(codeHtml: string, theme: AppTheme) {
   frame.style.setProperty("--snapshot-width", `${initialWidth}px`);
   frame.style.setProperty("--snapshot-height", `${initialWidth}px`);
   frame.style.setProperty("--snapshot-padding", `${snapshotPadding}px`);
-  frame.innerHTML = createCodeWindowMarkup(codeHtml);
+  await renderSnapshotCodeWindow(frame, codeHtml);
   host.appendChild(frame);
 
   document.body.appendChild(host);

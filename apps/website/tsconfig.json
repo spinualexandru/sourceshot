@@ -12,6 +12,8 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
 
     /* Linting */
     "noUnusedLocals": true,

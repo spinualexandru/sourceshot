@@ -1,4 +1,5 @@
 import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
 export type ToolDropdownOption = {
   label: string;
@@ -15,6 +16,7 @@ export type ToolDropdownToggleEvent = CustomEvent<{
   dropdownName: string;
 }>;
 
+@customElement("tool-dropdown")
 export class ToolDropdown extends LitElement {
   static styles = css`
     :host {
@@ -265,40 +267,32 @@ export class ToolDropdown extends LitElement {
     }
   `;
 
-  static properties = {
-    buttonClassName: { type: String, attribute: "button-class-name" },
-    dropdownName: { type: String, attribute: "dropdown-name" },
-    label: { type: String },
-    labelDataAttribute: { type: String, attribute: "label-data-attribute" },
-    listboxLabel: { type: String, attribute: "listbox-label" },
-    open: { type: Boolean, reflect: true },
-    optionDataAttribute: { type: String, attribute: "option-data-attribute" },
-    options: { attribute: false },
-    placement: { type: String, reflect: true },
-  };
+  @property({ type: String, attribute: "button-class-name" })
+  buttonClassName = "tool-island__button";
 
-  declare buttonClassName: string;
-  declare dropdownName: string;
-  declare label: string;
-  declare labelDataAttribute: string;
-  declare listboxLabel: string;
-  declare open: boolean;
-  declare optionDataAttribute: string;
-  declare options: ToolDropdownOption[];
-  declare placement: "above" | "below";
+  @property({ type: String, attribute: "dropdown-name" })
+  dropdownName = "";
 
-  constructor() {
-    super();
-    this.buttonClassName = "tool-island__button";
-    this.dropdownName = "";
-    this.label = "";
-    this.labelDataAttribute = "";
-    this.listboxLabel = "";
-    this.open = false;
-    this.optionDataAttribute = "";
-    this.options = [];
-    this.placement = "above";
-  }
+  @property({ type: String })
+  label = "";
+
+  @property({ type: String, attribute: "label-data-attribute" })
+  labelDataAttribute = "";
+
+  @property({ type: String, attribute: "listbox-label" })
+  listboxLabel = "";
+
+  @property({ type: Boolean, reflect: true })
+  open = false;
+
+  @property({ type: String, attribute: "option-data-attribute" })
+  optionDataAttribute = "";
+
+  @property({ attribute: false })
+  options: ToolDropdownOption[] = [];
+
+  @property({ type: String, reflect: true })
+  placement: "above" | "below" = "above";
 
   private readonly emitToggle = () => {
     this.dispatchEvent(
@@ -401,8 +395,4 @@ export class ToolDropdown extends LitElement {
       </div>
     `;
   }
-}
-
-if (!customElements.get("tool-dropdown")) {
-  customElements.define("tool-dropdown", ToolDropdown);
 }

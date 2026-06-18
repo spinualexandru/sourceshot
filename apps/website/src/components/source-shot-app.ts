@@ -1,7 +1,9 @@
 import { LitElement, css, html } from "lit";
+import { customElement } from "lit/decorators.js";
 import "../code-editor.ts";
 import "./brand-lockup.ts";
 
+@customElement("source-shot-app")
 export class SourceShotApp extends LitElement {
   static styles = css`
     :host {
@@ -47,8 +49,4 @@ export class SourceShotApp extends LitElement {
       </section>
     `;
   }
-}
-
-if (!customElements.get("source-shot-app")) {
-  customElements.define("source-shot-app", SourceShotApp);
 }

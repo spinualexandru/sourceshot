@@ -1,9 +1,9 @@
-import { LitElement, css, html } from "lit";
-import markup from "../lib/highlighter.ts";
+import { LitElement, css, html, type TemplateResult } from "lit";
+import { customElement } from "lit/decorators.js";
 
-export function renderWindowDecoration() {
-  return markup`
-    <div class="code__window-decoration">
+export function windowDecorationTemplate(): TemplateResult {
+  return html`
+    <div class="code__window-decoration" aria-hidden="true">
       <div class="code-window-decoration" data-color="red"></div>
       <div class="code-window-decoration" data-color="yellow"></div>
       <div class="code-window-decoration" data-color="green"></div>
@@ -11,6 +11,7 @@ export function renderWindowDecoration() {
   `;
 }
 
+@customElement("source-window-decoration")
 export class SourceWindowDecoration extends LitElement {
   static styles = css`
     :host {
@@ -50,8 +51,4 @@ export class SourceWindowDecoration extends LitElement {
       </div>
     `;
   }
-}
-
-if (!customElements.get("source-window-decoration")) {
-  customElements.define("source-window-decoration", SourceWindowDecoration);
 }

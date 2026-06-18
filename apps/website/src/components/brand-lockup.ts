@@ -1,5 +1,7 @@
 import { LitElement, css, html } from "lit";
+import { customElement } from "lit/decorators.js";
 
+@customElement("brand-lockup")
 export class BrandLockup extends LitElement {
   static styles = css`
     :host {
@@ -84,8 +86,4 @@ export class BrandLockup extends LitElement {
       </header>
     `;
   }
-}
-
-if (!customElements.get("brand-lockup")) {
-  customElements.define("brand-lockup", BrandLockup);
 }

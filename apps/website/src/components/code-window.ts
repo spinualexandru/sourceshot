@@ -1,7 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { LitElement, css, html, type TemplateResult } from "lit";
+import { customElement, property, query } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import markup from "../lib/highlighter.ts";
-import { renderWindowDecoration } from "./window-decoration.ts";
+import { windowDecorationTemplate } from "./window-decoration.ts";
 import "./window-decoration.ts";
 
 type CodeWindowOptions = {
@@ -14,21 +14,23 @@ type CodeScrollPosition = {
   top: number;
 };
 
-export function renderCodeWindow({ codeHtml = "", snapshot = false }: CodeWindowOptions = {}) {
-  const snapshotModifier = snapshot ? " code__container--snapshot" : "";
-  const editorModifier = snapshot ? " code__editor--snapshot" : "";
-  const outputModifier = snapshot ? " code__output--snapshot" : "";
-
-  return markup`
-    <div class="code__container${snapshotModifier}">
-      <div class="code__header">${renderWindowDecoration()}</div>
-      <div class="code__editor${editorModifier}">
-        <div class="code__output${outputModifier}" aria-hidden="true">${codeHtml}</div>
+export function renderCodeWindow({
+  codeHtml = "",
+  snapshot = false,
+}: CodeWindowOptions = {}): TemplateResult {
+  return html`
+    <div class=${`code__container${snapshot ? " code__container--snapshot" : ""}`}>
+      <div class="code__header">${windowDecorationTemplate()}</div>
+      <div class=${`code__editor${snapshot ? " code__editor--snapshot" : ""}`}>
+        <div class=${`code__output${snapshot ? " code__output--snapshot" : ""}`} aria-hidden="true">
+          ${unsafeHTML(codeHtml)}
+        </div>
       </div>
     </div>
   `;
 }
 
+@customElement("source-code-window")
 export class SourceCodeWindow extends LitElement {
   static styles = css`
     :host {
@@ -218,22 +220,20 @@ export class SourceCodeWindow extends LitElement {
     }
   `;
 
-  static properties = {
-    code: { type: String },
-    codeHtml: { type: String, attribute: "code-html" },
-    languageLabel: { type: String, attribute: "language-label" },
-  };
+  @property({ type: String })
+  code = "";
 
-  declare code: string;
-  declare codeHtml: string;
-  declare languageLabel: string;
+  @property({ type: String, attribute: "code-html" })
+  codeHtml = "";
 
-  constructor() {
-    super();
-    this.code = "";
-    this.codeHtml = "";
-    this.languageLabel = "TypeScript";
-  }
+  @property({ type: String, attribute: "language-label" })
+  languageLabel = "TypeScript";
+
+  @query(".code__output")
+  private readonly codeOutputElement?: HTMLDivElement;
+
+  @query(".code__textarea")
+  private readonly codeTextAreaElement?: HTMLTextAreaElement;
 
   get cursorOffset() {
     return this.codeTextAreaElement?.selectionStart ?? this.code.length;
@@ -246,14 +246,6 @@ export class SourceCodeWindow extends LitElement {
       left: codeTextAreaElement?.scrollLeft ?? 0,
       top: codeTextAreaElement?.scrollTop ?? 0,
     };
-  }
-
-  private get codeOutputElement() {
-    return this.renderRoot.querySelector<HTMLDivElement>(".code__output");
-  }
-
-  private get codeTextAreaElement() {
-    return this.renderRoot.querySelector<HTMLTextAreaElement>(".code__textarea");
   }
 
   override updated() {
@@ -340,8 +332,4 @@ export class SourceCodeWindow extends LitElement {
       </div>
     `;
   }
-}
-
-if (!customElements.get("source-code-window")) {
-  customElements.define("source-code-window", SourceCodeWindow);
 }

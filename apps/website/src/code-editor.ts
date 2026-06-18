@@ -1,4 +1,5 @@
 import { LitElement, css, html } from "lit";
+import { customElement, query, state } from "lit/decorators.js";
 import {
   type AppTheme,
   type LanguageOption,
@@ -24,6 +25,7 @@ import { applyTheme, getStoredTheme, storeTheme } from "./theme.ts";
 
 type DropdownName = "language" | "theme";
 
+@customElement("source-code-editor")
 export class SourceCodeEditor extends LitElement {
   static styles = css`
     :host {
@@ -48,35 +50,31 @@ export class SourceCodeEditor extends LitElement {
     }
   `;
 
-  static properties = {
-    code: { state: true },
-    codeHtml: { state: true },
-    exportInProgress: { state: true },
-    formatInProgress: { state: true },
-    openDropdown: { state: true },
-    selectedLanguage: { state: true },
-    selectedTheme: { state: true },
-  };
+  @state()
+  private code = initialCode;
 
-  declare private code: string;
-  declare private codeHtml: string;
-  declare private exportInProgress: boolean;
-  declare private formatInProgress: boolean;
-  declare private openDropdown: DropdownName | undefined;
+  @state()
+  private codeHtml = "";
+
+  @state()
+  private exportInProgress = false;
+
+  @state()
+  private formatInProgress = false;
+
+  @state()
+  private openDropdown: DropdownName | undefined;
+
+  @state()
+  private selectedLanguage: LanguageOption = languageOptions[0];
+
+  @state()
+  private selectedTheme: AppTheme = getStoredTheme();
+
+  @query("source-code-window")
+  private readonly codeWindowElement?: SourceCodeWindow;
+
   private renderId = 0;
-  declare private selectedLanguage: LanguageOption;
-  declare private selectedTheme: AppTheme;
-
-  constructor() {
-    super();
-    this.code = initialCode;
-    this.codeHtml = "";
-    this.exportInProgress = false;
-    this.formatInProgress = false;
-    this.openDropdown = undefined;
-    this.selectedLanguage = languageOptions[0];
-    this.selectedTheme = getStoredTheme();
-  }
 
   private readonly handleDocumentKeydown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -106,10 +104,6 @@ export class SourceCodeEditor extends LitElement {
 
   private closeDropdowns() {
     this.openDropdown = undefined;
-  }
-
-  private get codeWindowElement() {
-    return this.renderRoot.querySelector<SourceCodeWindow>("source-code-window");
   }
 
   private isDropdownOpen(dropdownName: DropdownName) {
@@ -280,8 +274,4 @@ export class SourceCodeEditor extends LitElement {
       ${this.renderCodeWindow()} ${this.renderThemeSwitcher()} ${this.renderToolIsland()}
     `;
   }
-}
-
-if (!customElements.get("source-code-editor")) {
-  customElements.define("source-code-editor", SourceCodeEditor);
 }

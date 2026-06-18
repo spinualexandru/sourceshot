@@ -1,4 +1,5 @@
 import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 import { type CodeLanguage, type LanguageOption, languageOptions } from "../code-options.ts";
 import "./tool-dropdown.ts";
 import type { ToolDropdownOption, ToolDropdownSelectEvent } from "./tool-dropdown.ts";
@@ -11,6 +12,7 @@ export type ToolIslandLanguageChangeEvent = CustomEvent<{
   language: CodeLanguage;
 }>;
 
+@customElement("tool-island")
 export class ToolIsland extends LitElement {
   static styles = css`
     :host {
@@ -135,25 +137,17 @@ export class ToolIsland extends LitElement {
     }
   `;
 
-  static properties = {
-    exportInProgress: { type: Boolean, attribute: "export-in-progress" },
-    formatInProgress: { type: Boolean, attribute: "format-in-progress" },
-    languageOpen: { type: Boolean, attribute: "language-open" },
-    selectedLanguage: { attribute: false },
-  };
+  @property({ type: Boolean, attribute: "export-in-progress" })
+  exportInProgress = false;
 
-  declare exportInProgress: boolean;
-  declare formatInProgress: boolean;
-  declare languageOpen: boolean;
-  declare selectedLanguage: LanguageOption;
+  @property({ type: Boolean, attribute: "format-in-progress" })
+  formatInProgress = false;
 
-  constructor() {
-    super();
-    this.exportInProgress = false;
-    this.formatInProgress = false;
-    this.languageOpen = false;
-    this.selectedLanguage = languageOptions[0];
-  }
+  @property({ type: Boolean, attribute: "language-open" })
+  languageOpen = false;
+
+  @property({ attribute: false })
+  selectedLanguage: LanguageOption = languageOptions[0];
 
   private get languageDropdownOptions(): ToolDropdownOption[] {
     return languageOptions.map((language) => ({
@@ -222,8 +216,4 @@ export class ToolIsland extends LitElement {
       ></tool-dropdown>
     `;
   }
-}
-
-if (!customElements.get("tool-island")) {
-  customElements.define("tool-island", ToolIsland);
 }

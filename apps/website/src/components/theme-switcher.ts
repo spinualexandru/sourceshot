@@ -1,4 +1,5 @@
 import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 import { type AppTheme, getThemeOption, themeOptions } from "../code-options.ts";
 import "./tool-dropdown.ts";
 import type { ToolDropdownOption, ToolDropdownSelectEvent } from "./tool-dropdown.ts";
@@ -7,6 +8,7 @@ export type ThemeSwitcherChangeEvent = CustomEvent<{
   theme: AppTheme;
 }>;
 
+@customElement("theme-switcher")
 export class ThemeSwitcher extends LitElement {
   static styles = css`
     :host {
@@ -54,19 +56,11 @@ export class ThemeSwitcher extends LitElement {
     }
   `;
 
-  static properties = {
-    open: { type: Boolean },
-    selectedTheme: { type: String, attribute: "selected-theme" },
-  };
+  @property({ type: Boolean })
+  open = false;
 
-  declare open: boolean;
-  declare selectedTheme: AppTheme;
-
-  constructor() {
-    super();
-    this.open = false;
-    this.selectedTheme = themeOptions[0].value;
-  }
+  @property({ type: String, attribute: "selected-theme" })
+  selectedTheme: AppTheme = themeOptions[0].value;
 
   private get themeDropdownOptions(): ToolDropdownOption[] {
     return themeOptions.map((theme) => ({
@@ -108,8 +102,4 @@ export class ThemeSwitcher extends LitElement {
       ></tool-dropdown>
     `;
   }
-}
-
-if (!customElements.get("theme-switcher")) {
-  customElements.define("theme-switcher", ThemeSwitcher);
 }
