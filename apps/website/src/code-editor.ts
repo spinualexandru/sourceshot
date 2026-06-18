@@ -7,6 +7,7 @@ import {
   languageOptions,
   themeOptions,
 } from "./code-options.ts";
+import { formatCode } from "./code-format.ts";
 import { renderCodeHtml } from "./code-highlight.ts";
 import { renderWindowDecoration } from "./components/window-decoration.ts";
 import { initialCode } from "./sample-code.ts";
@@ -20,6 +21,7 @@ export class SourceCodeEditor extends LitElement {
     code: { state: true },
     codeHtml: { state: true },
     exportInProgress: { state: true },
+    formatInProgress: { state: true },
     openDropdown: { state: true },
     selectedLanguage: { state: true },
     selectedTheme: { state: true },
@@ -28,6 +30,7 @@ export class SourceCodeEditor extends LitElement {
   declare private code: string;
   declare private codeHtml: string;
   declare private exportInProgress: boolean;
+  declare private formatInProgress: boolean;
   declare private openDropdown: DropdownName | undefined;
   private renderId = 0;
   declare private selectedLanguage: LanguageOption;
@@ -38,6 +41,7 @@ export class SourceCodeEditor extends LitElement {
     this.code = initialCode;
     this.codeHtml = "";
     this.exportInProgress = false;
+    this.formatInProgress = false;
     this.openDropdown = undefined;
     this.selectedLanguage = languageOptions[0];
     this.selectedTheme = getStoredTheme();
@@ -132,6 +136,44 @@ export class SourceCodeEditor extends LitElement {
       console.error("Failed to export snapshot", error);
     } finally {
       this.exportInProgress = false;
+    }
+  };
+
+  private readonly formatCurrentCode = async () => {
+    if (this.formatInProgress) {
+      return;
+    }
+
+    const codeTextAreaElement = this.codeTextAreaElement;
+    const cursorOffset = codeTextAreaElement?.selectionStart ?? this.code.length;
+    const scrollLeft = codeTextAreaElement?.scrollLeft ?? 0;
+    const scrollTop = codeTextAreaElement?.scrollTop ?? 0;
+    this.formatInProgress = true;
+
+    try {
+      const result = await formatCode(this.code, this.selectedLanguage.value, cursorOffset);
+
+      if (!result.formatted) {
+        return;
+      }
+
+      this.code = result.code;
+      await this.updateHighlightedCode();
+      await this.updateComplete;
+
+      const nextCodeTextAreaElement = this.codeTextAreaElement;
+      nextCodeTextAreaElement?.focus();
+      nextCodeTextAreaElement?.setSelectionRange(result.cursorOffset, result.cursorOffset);
+
+      if (nextCodeTextAreaElement) {
+        nextCodeTextAreaElement.scrollLeft = scrollLeft;
+        nextCodeTextAreaElement.scrollTop = scrollTop;
+        this.syncScroll();
+      }
+    } catch (error: unknown) {
+      console.error("Failed to format code", error);
+    } finally {
+      this.formatInProgress = false;
     }
   };
 
@@ -272,6 +314,15 @@ export class SourceCodeEditor extends LitElement {
   private renderToolIsland() {
     return html`
       <div class="tool-island" aria-label="SourceShot tools">
+        <button
+          class="tool-island__button"
+          type="button"
+          data-action="format"
+          ?disabled=${this.formatInProgress}
+          @click=${this.formatCurrentCode}
+        >
+          Format
+        </button>
         <button
           class="tool-island__button"
           type="button"
