@@ -200,7 +200,7 @@ function createMonoCodeTheme({
 export const customCodeThemes = {
   "sourceshot-mono": createMonoCodeTheme({
     name: "sourceshot-mono",
-    displayName: "SourceShot Mono",
+    displayName: "Mono Light",
     type: "light",
     foreground: sourceShotMonoVariables["--text-h"],
     background: sourceShotMonoVariables["--bg"],
@@ -209,7 +209,7 @@ export const customCodeThemes = {
   }),
   "sourceshot-mono-dark": createMonoCodeTheme({
     name: "sourceshot-mono-dark",
-    displayName: "SourceShot Mono Dark",
+    displayName: "Mono Dark",
     type: "dark",
     foreground: sourceShotMonoDarkVariables["--text-h"],
     background: sourceShotMonoDarkVariables["--bg"],
@@ -220,28 +220,28 @@ export const customCodeThemes = {
 
 export const appThemeDefinitions = [
   {
-    label: "SourceShot Light",
+    label: "Light",
     value: "light",
     codeTheme: "vitesse-light",
     colorScheme: "light",
     variables: sourceShotLightVariables,
   },
   {
-    label: "SourceShot Dark",
+    label: "Dark",
     value: "dark",
     codeTheme: "vitesse-dark",
     colorScheme: "dark",
     variables: sourceShotDarkVariables,
   },
   {
-    label: "SourceShot Mono",
+    label: "Mono",
     value: "mono",
     codeTheme: "sourceshot-mono",
     colorScheme: "light",
     variables: sourceShotMonoVariables,
   },
   {
-    label: "SourceShot Mono Dark",
+    label: "Mono Dark",
     value: "mono-dark",
     codeTheme: "sourceshot-mono-dark",
     colorScheme: "dark",

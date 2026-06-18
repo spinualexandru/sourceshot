@@ -9,11 +9,12 @@ import { renderCodeHtml } from "./code-highlight.ts";
 import { initialCode } from "./sample-code.ts";
 import { downloadPageSnapshot } from "./snapshot-export.ts";
 import { applyTheme, getStoredTheme, storeTheme } from "./theme.ts";
+import html from "./lib/highlighter.ts";
 
 function renderThemeOptions(selectedTheme: AppTheme) {
   return themeOptions
     .map(
-      (theme) => `
+      (theme) => html`
         <button
           class="tool-island__option"
           type="button"
@@ -31,7 +32,7 @@ function renderThemeOptions(selectedTheme: AppTheme) {
 function renderLanguageOptions(selectedLanguage: LanguageOption) {
   return languageOptions
     .map(
-      (language) => `
+      (language) => html`
         <button
           class="tool-island__option"
           type="button"
@@ -47,7 +48,7 @@ function renderLanguageOptions(selectedLanguage: LanguageOption) {
 }
 
 function renderEditorChrome(selectedLanguage: LanguageOption, selectedTheme: AppTheme) {
-  return `
+  return html`
     <div class="code__container">
       <div class="code__header">
         <div class="code__window-decoration">
@@ -62,7 +63,12 @@ function renderEditorChrome(selectedLanguage: LanguageOption, selectedTheme: App
     </div>
     <div class="theme-switcher" aria-label="Theme selector">
       <div class="tool-island__dropdown" data-dropdown="theme">
-        <button class="theme-switcher__button tool-island__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+        <button
+          class="theme-switcher__button tool-island__select"
+          type="button"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+        >
           <span data-theme-label>${getThemeOption(selectedTheme).label}</span>
         </button>
         <div class="tool-island__menu">
@@ -75,7 +81,12 @@ function renderEditorChrome(selectedLanguage: LanguageOption, selectedTheme: App
     <div class="tool-island" aria-label="SourceShot tools">
       <button class="tool-island__button" type="button" data-action="export">Export</button>
       <div class="tool-island__dropdown" data-dropdown="language">
-        <button class="tool-island__button tool-island__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+        <button
+          class="tool-island__button tool-island__select"
+          type="button"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+        >
           <span data-language-label>${selectedLanguage.label}</span>
         </button>
         <div class="tool-island__menu">

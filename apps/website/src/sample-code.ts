@@ -1,8 +1,4 @@
-export const initialCode = `type Brick = {
-  color: "red" | "yellow" | "green";
-  studs: number;
-};
+import { ts } from "./lib/highlighter";
 
-const build = (bricks: Brick[]) =>
-  bricks.map((brick) => brick.color).join(" + ");
-`;
+export const initialCode = ts`type Brick = { color: "red" | "yellow" | "green"; studs: number; };
+const build = (bricks: Brick[]) => bricks.map((brick) => brick.color).join(" + "); `;

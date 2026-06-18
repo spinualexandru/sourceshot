@@ -1,5 +1,7 @@
+import html from "./lib/highlighter";
+
 export function createCodeWindowMarkup(codeHtml: string) {
-  return `
+  return html`
     <div class="code__container code__container--snapshot">
       <div class="code__header">
         <div class="code__window-decoration">

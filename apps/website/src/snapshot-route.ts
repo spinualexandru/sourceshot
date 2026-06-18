@@ -7,6 +7,7 @@ import {
   languageOptions,
   themeOptions,
 } from "./code-options.ts";
+import html from "./lib/highlighter.ts";
 import { createPageSnapshotBlob } from "./snapshot-export.ts";
 import { applyTheme } from "./theme.ts";
 
@@ -64,8 +65,9 @@ export async function renderSnapshotFromHash(element: HTMLElement) {
 
     console.error("Failed to decode snapshot hash", error);
     document.body.classList.add("is-snapshot-route");
-    element.innerHTML =
-      '<div class="snapshot-route-status" role="alert">Could not decode snapshot code.</div>';
+    element.innerHTML = html`<div class="snapshot-route-status" role="alert">
+      Could not decode snapshot code.
+    </div>`;
     return true;
   }
 
@@ -75,7 +77,7 @@ export async function renderSnapshotFromHash(element: HTMLElement) {
 
   document.body.classList.add("is-snapshot-route");
   applyTheme(snapshotRequest.theme);
-  element.innerHTML = '<div class="snapshot-route-status">Rendering snapshot...</div>';
+  element.innerHTML = html`<div class="snapshot-route-status">Rendering snapshot...</div>`;
 
   try {
     const { blob } = await createPageSnapshotBlob(
@@ -87,8 +89,9 @@ export async function renderSnapshotFromHash(element: HTMLElement) {
     openBlobImage(blob);
   } catch (error: unknown) {
     console.error("Failed to render snapshot from hash", error);
-    element.innerHTML =
-      '<div class="snapshot-route-status" role="alert">Could not render snapshot.</div>';
+    element.innerHTML = html`<div class="snapshot-route-status" role="alert">
+      Could not render snapshot.
+    </div>`;
   }
 
   return true;
