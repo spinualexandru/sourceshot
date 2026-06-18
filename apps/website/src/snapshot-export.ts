@@ -2,6 +2,7 @@ import { type AppTheme, type CodeLanguage } from "./code-options.ts";
 import { renderCodeHtml } from "./code-highlight.ts";
 import { createCodeWindowMarkup } from "./code-window.ts";
 import { downloadBlob } from "./blob-actions.ts";
+import { applyThemeProperties } from "./theme.ts";
 
 const maxSnapshotWidth = 1280;
 const minSnapshotWidth = 320;
@@ -43,7 +44,7 @@ async function createSnapshotFrame(codeHtml: string, theme: AppTheme) {
   const frame = document.createElement("div");
   host.className = "snapshot-host";
   frame.className = "snapshot-frame";
-  frame.dataset.theme = theme;
+  applyThemeProperties(frame, theme);
   frame.style.setProperty("--snapshot-width", `${initialWidth}px`);
   frame.style.setProperty("--snapshot-height", `${initialWidth}px`);
   frame.style.setProperty("--snapshot-padding", `${snapshotPadding}px`);

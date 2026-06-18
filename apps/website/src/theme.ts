@@ -1,4 +1,5 @@
 import { type AppTheme, isAppTheme, themeOptions } from "./code-options.ts";
+import { getThemeDefinition, themeCssVariableNames } from "./theme-definitions.ts";
 
 const themeStorageKey = "sourceshot-theme";
 
@@ -20,5 +21,16 @@ export function storeTheme(theme: AppTheme) {
 }
 
 export function applyTheme(theme: AppTheme) {
-  document.documentElement.dataset.theme = theme;
+  applyThemeProperties(document.documentElement, theme);
+}
+
+export function applyThemeProperties(element: HTMLElement, theme: AppTheme) {
+  const themeDefinition = getThemeDefinition(theme);
+
+  element.dataset.theme = theme;
+  element.style.setProperty("color-scheme", themeDefinition.colorScheme);
+
+  for (const variableName of themeCssVariableNames) {
+    element.style.setProperty(variableName, themeDefinition.variables[variableName]);
+  }
 }

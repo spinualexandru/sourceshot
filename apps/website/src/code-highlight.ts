@@ -6,6 +6,7 @@ import {
   getThemeOption,
 } from "./code-options.ts";
 import { resolveCodeLanguage } from "./language-detection.ts";
+import { customCodeThemes } from "./theme-definitions.ts";
 
 const darkPunctuationColor = "#A8B0BD";
 
@@ -40,6 +41,7 @@ async function getShiki() {
           typescript: () => import("shiki/dist/langs/typescript.mjs"),
         },
         themes: {
+          ...customCodeThemes,
           "vitesse-dark": () => import("shiki/dist/themes/vitesse-dark.mjs"),
           "vitesse-light": () => import("shiki/dist/themes/vitesse-light.mjs"),
         },

@@ -1,3 +1,5 @@
+import { appThemeDefinitions } from "./theme-definitions.ts";
+
 export const syntaxLanguageOptions = [
   { label: "TypeScript", value: "typescript", extension: "ts" },
   { label: "JavaScript", value: "javascript", extension: "js" },
@@ -21,10 +23,11 @@ export type LanguageOption = (typeof languageOptions)[number];
 export type CodeLanguage = LanguageOption["value"];
 export type SyntaxLanguage = (typeof syntaxLanguageOptions)[number]["value"];
 
-export const themeOptions = [
-  { label: "SourceShot Light", value: "light", codeTheme: "vitesse-light" },
-  { label: "SourceShot Dark", value: "dark", codeTheme: "vitesse-dark" },
-] as const;
+export const themeOptions = appThemeDefinitions.map(({ codeTheme, label, value }) => ({
+  codeTheme,
+  label,
+  value,
+}));
 
 export type ThemeOption = (typeof themeOptions)[number];
 export type AppTheme = ThemeOption["value"];

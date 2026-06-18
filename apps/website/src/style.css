@@ -52,41 +52,6 @@
   }
 }
 
-:root[data-theme="dark"],
-.snapshot-frame[data-theme="dark"] {
-  --text: #a9b1bd;
-  --text-h: #f6f2eb;
-  --bg: #111116;
-  --bg-glow-warm: #a44e39;
-  --bg-glow-rose: #65324c;
-  --bg-glow-violet: #302756;
-  --bg-glow-light: #1e4c52;
-  --bg-noise-opacity: 0.72;
-  --border: #2b2d35;
-  --code-bg: #171820;
-  --accent: #77dac8;
-  --accent-bg: rgba(119, 218, 200, 0.14);
-  --accent-border: rgba(119, 218, 200, 0.48);
-  --social-bg: rgba(30, 33, 42, 0.52);
-  --shadow: rgba(0, 0, 0, 0.46) 0 16px 34px -8px, rgba(0, 0, 0, 0.32) 0 6px 12px -4px;
-  --glass: #4a5360;
-  --glass-light: #ffffff;
-  --glass-dark: #000000;
-  --glass-reflex-dark: 2.1;
-  --glass-reflex-light: 0.36;
-  --glass-saturation: 176%;
-  --code-container-border: #2e3340;
-  --code-container-bg: #11151e;
-  --code-container-fill-start: 96%;
-  --code-container-fill-mid: 92%;
-  --code-container-shine: 10%;
-  --code-container-top-reflex: 10%;
-  --code-container-border-start: 28%;
-  --code-container-border-end: 38%;
-  --code-container-overlay-opacity: 0.28;
-  color-scheme: dark;
-}
-
 *,
 *::before,
 *::after {
