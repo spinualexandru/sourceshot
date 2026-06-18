@@ -1,15 +1,23 @@
-import { LitElement, html } from "lit";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { LitElement, css, html } from "lit";
 import {
   type AppTheme,
   type LanguageOption,
-  getThemeOption,
+  isAppTheme,
+  isCodeLanguage,
   languageOptions,
-  themeOptions,
 } from "./code-options.ts";
 import { formatCode } from "./code-format.ts";
 import { renderCodeHtml } from "./code-highlight.ts";
-import { renderWindowDecoration } from "./components/window-decoration.ts";
+import "./components/code-window.ts";
+import type { SourceCodeWindow } from "./components/code-window.ts";
+import "./components/theme-switcher.ts";
+import type { ThemeSwitcherChangeEvent } from "./components/theme-switcher.ts";
+import type { ToolDropdownToggleEvent } from "./components/tool-dropdown.ts";
+import "./components/tool-island.ts";
+import type {
+  ToolIslandActionEvent,
+  ToolIslandLanguageChangeEvent,
+} from "./components/tool-island.ts";
 import { initialCode } from "./sample-code.ts";
 import { downloadPageSnapshot } from "./snapshot-export.ts";
 import { applyTheme, getStoredTheme, storeTheme } from "./theme.ts";
@@ -17,6 +25,29 @@ import { applyTheme, getStoredTheme, storeTheme } from "./theme.ts";
 type DropdownName = "language" | "theme";
 
 export class SourceCodeEditor extends LitElement {
+  static styles = css`
+    :host {
+      display: block;
+      font: inherit;
+      color: inherit;
+    }
+
+    *,
+    *::before,
+    *::after {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    button,
+    textarea {
+      font-smooth: always;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  `;
+
   static properties = {
     code: { state: true },
     codeHtml: { state: true },
@@ -54,7 +85,7 @@ export class SourceCodeEditor extends LitElement {
   };
 
   private readonly handleDocumentPointerDown = (event: PointerEvent) => {
-    if (!this.contains(event.target as Node)) {
+    if (!event.composedPath().includes(this)) {
       this.closeDropdowns();
     }
   };
@@ -73,40 +104,17 @@ export class SourceCodeEditor extends LitElement {
     super.disconnectedCallback();
   }
 
-  override createRenderRoot() {
-    return this;
-  }
-
-  protected override updated() {
-    this.syncScroll();
-  }
-
   private closeDropdowns() {
     this.openDropdown = undefined;
   }
 
-  private get codeOutputElement() {
-    return this.querySelector<HTMLDivElement>(".code__output");
-  }
-
-  private get codeTextAreaElement() {
-    return this.querySelector<HTMLTextAreaElement>(".code__textarea");
+  private get codeWindowElement() {
+    return this.renderRoot.querySelector<SourceCodeWindow>("source-code-window");
   }
 
   private isDropdownOpen(dropdownName: DropdownName) {
     return this.openDropdown === dropdownName;
   }
-
-  private readonly syncScroll = () => {
-    const codeOutputElement = this.codeOutputElement;
-    const codeTextAreaElement = this.codeTextAreaElement;
-
-    if (!codeOutputElement || !codeTextAreaElement) {
-      return;
-    }
-
-    codeOutputElement.style.transform = `translate(${-codeTextAreaElement.scrollLeft}px, ${-codeTextAreaElement.scrollTop}px)`;
-  };
 
   private toggleDropdown(dropdownName: DropdownName) {
     this.openDropdown = this.isDropdownOpen(dropdownName) ? undefined : dropdownName;
@@ -144,10 +152,9 @@ export class SourceCodeEditor extends LitElement {
       return;
     }
 
-    const codeTextAreaElement = this.codeTextAreaElement;
-    const cursorOffset = codeTextAreaElement?.selectionStart ?? this.code.length;
-    const scrollLeft = codeTextAreaElement?.scrollLeft ?? 0;
-    const scrollTop = codeTextAreaElement?.scrollTop ?? 0;
+    const codeWindowElement = this.codeWindowElement;
+    const cursorOffset = codeWindowElement?.cursorOffset ?? this.code.length;
+    const scrollPosition = codeWindowElement?.scrollPosition ?? { left: 0, top: 0 };
     this.formatInProgress = true;
 
     try {
@@ -161,15 +168,8 @@ export class SourceCodeEditor extends LitElement {
       await this.updateHighlightedCode();
       await this.updateComplete;
 
-      const nextCodeTextAreaElement = this.codeTextAreaElement;
-      nextCodeTextAreaElement?.focus();
-      nextCodeTextAreaElement?.setSelectionRange(result.cursorOffset, result.cursorOffset);
-
-      if (nextCodeTextAreaElement) {
-        nextCodeTextAreaElement.scrollLeft = scrollLeft;
-        nextCodeTextAreaElement.scrollTop = scrollTop;
-        this.syncScroll();
-      }
+      await this.codeWindowElement?.updateComplete;
+      this.codeWindowElement?.restoreCursor(result.cursorOffset, scrollPosition);
     } catch (error: unknown) {
       console.error("Failed to format code", error);
     } finally {
@@ -177,22 +177,8 @@ export class SourceCodeEditor extends LitElement {
     }
   };
 
-  private readonly handleCodeInput = (event: Event) => {
-    this.code = (event.currentTarget as HTMLTextAreaElement).value;
-    void this.updateHighlightedCode();
-  };
-
-  private readonly handleCodeKeydown = (event: KeyboardEvent) => {
-    if (event.key !== "Tab") {
-      return;
-    }
-
-    event.preventDefault();
-
-    const codeTextAreaElement = event.currentTarget as HTMLTextAreaElement;
-    const { selectionStart, selectionEnd } = codeTextAreaElement;
-    codeTextAreaElement.setRangeText("  ", selectionStart, selectionEnd, "end");
-    this.code = codeTextAreaElement.value;
+  private readonly handleCodeChange = (event: CustomEvent<{ code: string }>) => {
+    this.code = event.detail.code;
     void this.updateHighlightedCode();
   };
 
@@ -210,130 +196,82 @@ export class SourceCodeEditor extends LitElement {
     void this.updateHighlightedCode();
   }
 
+  private readonly handleDropdownToggle = (event: ToolDropdownToggleEvent) => {
+    const dropdownName = event.detail.dropdownName;
+
+    if (dropdownName !== "language" && dropdownName !== "theme") {
+      return;
+    }
+
+    this.toggleDropdown(dropdownName);
+  };
+
+  private readonly handleLanguageChange = (event: ToolIslandLanguageChangeEvent) => {
+    const nextLanguage = event.detail.language;
+
+    if (!isCodeLanguage(nextLanguage)) {
+      return;
+    }
+
+    const language = languageOptions.find((option) => option.value === nextLanguage);
+
+    if (language) {
+      this.selectLanguage(language);
+    }
+  };
+
+  private readonly handleThemeChange = (event: ThemeSwitcherChangeEvent) => {
+    const nextTheme = event.detail.theme;
+
+    if (isAppTheme(nextTheme)) {
+      this.selectTheme(nextTheme);
+    }
+  };
+
+  private readonly handleToolAction = (event: ToolIslandActionEvent) => {
+    if (event.detail.action === "format") {
+      void this.formatCurrentCode();
+      return;
+    }
+
+    void this.exportSnapshot();
+  };
+
   private renderCodeWindow() {
     return html`
-      <div class="code__container">
-        <div class="code__header">${unsafeHTML(renderWindowDecoration())}</div>
-        <div class="code__editor">
-          <div class="code__output" aria-hidden="true">${unsafeHTML(this.codeHtml)}</div>
-          <textarea
-            class="code__textarea"
-            .value=${this.code}
-            spellcheck="false"
-            autocapitalize="off"
-            autocomplete="off"
-            wrap="off"
-            aria-label=${`${this.selectedLanguage.label} code editor`}
-            @input=${this.handleCodeInput}
-            @keydown=${this.handleCodeKeydown}
-            @scroll=${this.syncScroll}
-          ></textarea>
-        </div>
-      </div>
-    `;
-  }
-
-  private renderLanguageDropdown() {
-    const isOpen = this.isDropdownOpen("language");
-
-    return html`
-      <div class=${`tool-island__dropdown${isOpen ? " is-open" : ""}`} data-dropdown="language">
-        <button
-          class="tool-island__button tool-island__select"
-          type="button"
-          aria-expanded=${String(isOpen)}
-          aria-haspopup="listbox"
-          @click=${() => this.toggleDropdown("language")}
-        >
-          <span data-language-label>${this.selectedLanguage.label}</span>
-        </button>
-        <div class="tool-island__menu">
-          <div class="tool-island__menu-scroll" role="listbox" aria-label="Programming languages">
-            ${languageOptions.map(
-              (language) => html`
-                <button
-                  class="tool-island__option"
-                  type="button"
-                  role="option"
-                  data-language=${language.value}
-                  aria-selected=${String(language.value === this.selectedLanguage.value)}
-                  @click=${() => this.selectLanguage(language)}
-                >
-                  ${language.label}
-                </button>
-              `,
-            )}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  private renderThemeDropdown() {
-    const isOpen = this.isDropdownOpen("theme");
-
-    return html`
-      <div class=${`tool-island__dropdown${isOpen ? " is-open" : ""}`} data-dropdown="theme">
-        <button
-          class="theme-switcher__button tool-island__select"
-          type="button"
-          aria-expanded=${String(isOpen)}
-          aria-haspopup="listbox"
-          @click=${() => this.toggleDropdown("theme")}
-        >
-          <span data-theme-label>${getThemeOption(this.selectedTheme).label}</span>
-        </button>
-        <div class="tool-island__menu">
-          <div class="tool-island__menu-scroll" role="listbox" aria-label="Themes">
-            ${themeOptions.map(
-              (theme) => html`
-                <button
-                  class="tool-island__option"
-                  type="button"
-                  role="option"
-                  data-theme=${theme.value}
-                  aria-selected=${String(theme.value === this.selectedTheme)}
-                  @click=${() => this.selectTheme(theme.value)}
-                >
-                  ${theme.label}
-                </button>
-              `,
-            )}
-          </div>
-        </div>
-      </div>
+      <source-code-window
+        .code=${this.code}
+        .codeHtml=${this.codeHtml}
+        .languageLabel=${this.selectedLanguage.label}
+        @code-change=${this.handleCodeChange}
+      ></source-code-window>
     `;
   }
 
   private renderThemeSwitcher() {
     return html`
-      <div class="theme-switcher" aria-label="Theme selector">${this.renderThemeDropdown()}</div>
+      <theme-switcher
+        aria-label="Theme selector"
+        .open=${this.isDropdownOpen("theme")}
+        .selectedTheme=${this.selectedTheme}
+        @theme-change=${this.handleThemeChange}
+        @tool-dropdown-toggle=${this.handleDropdownToggle}
+      ></theme-switcher>
     `;
   }
 
   private renderToolIsland() {
     return html`
-      <div class="tool-island" aria-label="SourceShot tools">
-        <button
-          class="tool-island__button"
-          type="button"
-          data-action="format"
-          ?disabled=${this.formatInProgress}
-          @click=${this.formatCurrentCode}
-        >
-          Format
-        </button>
-        <button
-          class="tool-island__button"
-          type="button"
-          data-action="export"
-          ?disabled=${this.exportInProgress}
-          @click=${this.exportSnapshot}
-        >
-          Export
-        </button>
-        ${this.renderLanguageDropdown()}
-      </div>
+      <tool-island
+        aria-label="SourceShot tools"
+        .exportInProgress=${this.exportInProgress}
+        .formatInProgress=${this.formatInProgress}
+        .languageOpen=${this.isDropdownOpen("language")}
+        .selectedLanguage=${this.selectedLanguage}
+        @language-change=${this.handleLanguageChange}
+        @tool-action=${this.handleToolAction}
+        @tool-dropdown-toggle=${this.handleDropdownToggle}
+      ></tool-island>
     `;
   }
 

@@ -1,12 +1,21 @@
-import { type AppTheme, type LanguageOption } from "../code-options.ts";
-import html from "../lib/highlighter.ts";
-import { renderCodeWindow } from "./code-window.ts";
-import { renderThemeSwitcher } from "./theme-switcher.ts";
-import { renderToolIsland } from "./tool-island.ts";
+import { LitElement, css, html } from "lit";
+import "./theme-switcher.ts";
+import "./tool-island.ts";
 
-export function renderEditorChrome(selectedLanguage: LanguageOption, selectedTheme: AppTheme) {
-  return html`
-    ${renderCodeWindow()} ${renderThemeSwitcher(selectedTheme)}
-    ${renderToolIsland(selectedLanguage)}
+export class EditorChrome extends LitElement {
+  static styles = css`
+    :host {
+      display: contents;
+      font: inherit;
+      color: inherit;
+    }
   `;
+
+  protected override render() {
+    return html`<slot></slot>`;
+  }
+}
+
+if (!customElements.get("editor-chrome")) {
+  customElements.define("editor-chrome", EditorChrome);
 }

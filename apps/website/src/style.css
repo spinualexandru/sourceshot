@@ -192,35 +192,6 @@ body::before {
   opacity: var(--bg-noise-opacity);
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
 #app {
   position: relative;
   z-index: 1;
@@ -233,101 +204,7 @@ p {
   box-sizing: border-box;
 }
 
-source-shot-app {
-  display: contents;
-}
-
-source-code-editor {
-  display: block;
-}
-
-code {
-  font-family: var(--mono);
-  font-size: 16px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: transparent;
-}
-
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-  padding-bottom: 112px;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 112px;
-    gap: 18px;
-  }
-}
-
-.brand-lockup {
-  display: grid;
-  place-items: center;
-  gap: 6px;
-  text-align: center;
-}
-
-.brand-title {
-  margin: 0;
-  color: transparent;
-  background: var(--brand-title);
-  background-clip: text;
-  -webkit-background-clip: text;
-  font-family: "Instrument Serif", var(--heading);
-  font-size: 102px;
-  font-weight: 400;
-  line-height: 0.92;
-  letter-spacing: 0;
-  -webkit-text-fill-color: transparent;
-}
-
-.brand-byline {
-  color: color-mix(in srgb, var(--text-h) 62%, transparent);
-  font: 650 12px/1.2 var(--sans);
-  letter-spacing: 0;
-}
-
-.brand-byline a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 34%, transparent);
-  transition:
-    border-color 160ms ease,
-    color 160ms ease;
-}
-
-.brand-byline a:hover {
-  color: var(--text-h);
-  border-bottom-color: currentColor;
-}
-
-.brand-byline a:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 82%, white);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-
-@media (max-width: 1024px) {
-  .brand-title {
-    font-size: 64px;
-  }
-}
-
-@media (max-width: 560px) {
-  .brand-lockup {
-    gap: 4px;
-  }
-
-  .brand-title {
-    font-size: 48px;
-  }
-}
-
-.code__container {
+.snapshot-frame .code__container {
   position: relative;
   width: min(80vw, 1126px);
   height: 50vh;
@@ -400,7 +277,7 @@ code {
       color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 18%), transparent);
 }
 
-.code__container--snapshot {
+.snapshot-frame .code__container--snapshot {
   z-index: 1;
   width: fit-content;
   min-width: min(520px, calc(var(--snapshot-width) - var(--snapshot-padding) * 2));
@@ -409,7 +286,7 @@ code {
   max-height: none;
 }
 
-.code__container::before {
+.snapshot-frame .code__container::before {
   content: "";
   position: absolute;
   z-index: 0;
@@ -431,362 +308,38 @@ code {
   opacity: var(--code-container-overlay-opacity);
 }
 
-.code__header {
+.snapshot-frame .code__header {
   position: relative;
   z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .code__window-decoration {
-    display: flex;
-    gap: 8px;
-
-    .code-window-decoration {
-      width: 16px;
-      height: 16px;
-      border-radius: 16px;
-    }
-
-    .code-window-decoration[data-color="red"] {
-      background-color: #d61613;
-    }
-
-    .code-window-decoration[data-color="yellow"] {
-      background-color: #f5be25;
-    }
-
-    .code-window-decoration[data-color="green"] {
-      background-color: #25f59f;
-    }
-  }
 }
 
-.tool-island {
-  position: fixed;
-  z-index: 20;
-  left: 50%;
-  bottom: max(22px, env(safe-area-inset-bottom));
+.snapshot-frame .code__window-decoration {
   display: flex;
-  align-items: center;
   gap: 8px;
-  min-height: 64px;
-  box-sizing: border-box;
-  padding: 8px;
-  border-radius: 999px;
-  background-color: color-mix(in srgb, var(--glass) 18%, transparent);
-  backdrop-filter: blur(12px) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(12px) saturate(var(--glass-saturation));
-  box-shadow:
-    inset 0 0 0 1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 14%), transparent),
-    inset 1.8px 3px 0 -2px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 88%), transparent),
-    inset -2px -2px 0 -2px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 76%), transparent),
-    inset -3px -8px 1px -6px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 58%), transparent),
-    inset -0.3px -1px 4px 0
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
-    inset -1.5px 2.5px 0 -2px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-    inset 0 3px 4px -2px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-    inset 2px -6.5px 1px -4px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-    0 1px 5px 0
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-    0 18px 44px 0
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 16%), transparent);
-  translate: -50% 0;
 }
 
-.theme-switcher {
-  position: fixed;
-  z-index: 20;
-  top: max(22px, env(safe-area-inset-top));
-  right: max(22px, env(safe-area-inset-right));
-  display: flex;
-  box-sizing: border-box;
-  padding: 8px;
-  border-radius: 999px;
-  background-color: color-mix(in srgb, var(--glass) 18%, transparent);
-  backdrop-filter: blur(12px) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(12px) saturate(var(--glass-saturation));
-  box-shadow:
-    inset 0 0 0 1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 14%), transparent),
-    inset 1.8px 3px 0 -2px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 88%), transparent),
-    inset -2px -2px 0 -2px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 76%), transparent),
-    inset -3px -8px 1px -6px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 58%), transparent),
-    inset -0.3px -1px 4px 0
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
-    inset -1.5px 2.5px 0 -2px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-    inset 0 3px 4px -2px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-    inset 2px -6.5px 1px -4px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-    0 1px 5px 0
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-    0 18px 44px 0
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 16%), transparent);
+.snapshot-frame .code-window-decoration {
+  width: 16px;
+  height: 16px;
+  border-radius: 16px;
 }
 
-.tool-island__button,
-.theme-switcher__button {
-  appearance: none;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 104px;
-  height: 48px;
-  box-sizing: border-box;
-  border: 0;
-  border-radius: 999px;
-  padding: 0 18px;
-  color: var(--text-h);
-  background-color: color-mix(in srgb, var(--glass) 34%, transparent);
-  font: 700 14px/1 var(--sans);
-  letter-spacing: 0;
-  white-space: nowrap;
-  cursor: pointer;
-  box-shadow:
-    inset 0 0 0 1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 12%), transparent),
-    inset 2px 1px 0 -1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 88%), transparent),
-    inset -1.5px -1px 0 -1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 72%), transparent),
-    inset -2px -6px 1px -5px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 56%), transparent),
-    inset -1px 2px 3px -1px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 18%), transparent),
-    inset 0 -4px 1px -2px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-    0 3px 6px 0
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
-  transition:
-    background-color 180ms ease,
-    box-shadow 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
+.snapshot-frame .code-window-decoration[data-color="red"] {
+  background-color: #d61613;
 }
 
-.tool-island__button:hover,
-.theme-switcher__button:hover {
-  color: var(--accent);
-  background-color: color-mix(in srgb, var(--glass) 42%, transparent);
-  transform: translateY(-1px);
+.snapshot-frame .code-window-decoration[data-color="yellow"] {
+  background-color: #f5be25;
 }
 
-.tool-island__button:focus-visible,
-.theme-switcher__button:focus-visible,
-.tool-island__option:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 82%, white);
-  outline-offset: 3px;
+.snapshot-frame .code-window-decoration[data-color="green"] {
+  background-color: #25f59f;
 }
 
-.tool-island__dropdown {
-  position: relative;
-  display: flex;
-}
-
-.tool-island__select {
-  min-width: 156px;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.tool-island__select::after {
-  content: "";
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  rotate: 45deg;
-  translate: 0 -2px;
-  transition:
-    rotate 180ms ease,
-    translate 180ms ease;
-}
-
-.tool-island__dropdown.is-open .tool-island__select::after {
-  rotate: 225deg;
-  translate: 0 2px;
-}
-
-.tool-island__menu {
-  position: absolute;
-  isolation: isolate;
-  right: 0;
-  bottom: calc(100% + 12px);
-  width: 188px;
-  max-height: min(360px, calc(100svh - 136px));
-  box-sizing: border-box;
-  overflow: hidden;
-  border-radius: 24px;
-  background-color: color-mix(in srgb, var(--glass) 22%, transparent);
-  backdrop-filter: blur(34px) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(34px) saturate(var(--glass-saturation));
-  box-shadow:
-    inset 0 0 0 1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 16%), transparent),
-    inset 1.5px 2px 0 -1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 70%), transparent),
-    inset -2px -6px 1px -5px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 46%), transparent),
-    inset -1px 2px 3px -1px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 16%), transparent),
-    0 18px 38px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 16%), transparent);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(8px) scale(0.98);
-  transform-origin: bottom right;
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease;
-}
-
-.tool-island__menu-scroll {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 4px;
-  max-height: min(360px, calc(100svh - 136px));
-  box-sizing: border-box;
-  padding: 8px;
-  overflow: auto;
-  border-radius: inherit;
-}
-
-.tool-island__menu::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  box-sizing: border-box;
-  border: 8px solid transparent;
-  border-radius: inherit;
-  pointer-events: none;
-  backdrop-filter: blur(48px) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(48px) saturate(var(--glass-saturation));
-  -webkit-mask:
-    linear-gradient(black, black) border-box,
-    linear-gradient(black, black) padding-box;
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(black, black) border-box,
-    linear-gradient(black, black) padding-box;
-  mask-composite: subtract;
-}
-
-.tool-island__dropdown.is-open .tool-island__menu {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-
-.theme-switcher .tool-island__menu {
-  top: calc(100% + 12px);
-  bottom: auto;
-  transform: translateY(-8px) scale(0.98);
-  transform-origin: top right;
-}
-
-.theme-switcher .tool-island__dropdown.is-open .tool-island__menu {
-  transform: translateY(0) scale(1);
-}
-
-.tool-island__option {
-  appearance: none;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 38px;
-  width: 100%;
-  box-sizing: border-box;
-  border: 0;
-  border-radius: 18px;
-  padding: 0 12px;
-  color: var(--text-h);
-  background: transparent;
-  font: 650 14px/1 var(--sans);
-  letter-spacing: 0;
-  cursor: pointer;
-  text-align: left;
-  transition:
-    background-color 140ms ease,
-    color 140ms ease;
-}
-
-.tool-island__option:hover,
-.tool-island__option[aria-selected="true"] {
-  color: var(--accent);
-  background-color: color-mix(in srgb, var(--glass) 42%, transparent);
-}
-
-.tool-island__option[aria-selected="true"]::after {
-  content: "";
-  width: 6px;
-  height: 12px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  rotate: 45deg;
-}
-
-@media (max-width: 560px) {
-  .theme-switcher {
-    top: 14px;
-    right: 14px;
-  }
-
-  .tool-island {
-    width: calc(100% - 28px);
-    justify-content: center;
-    flex-wrap: wrap;
-    border-radius: 28px;
-  }
-
-  .tool-island__button {
-    flex: 1 1 0;
-    min-width: 0;
-    padding: 0 14px;
-  }
-
-  .tool-island__select {
-    min-width: 0;
-  }
-
-  .tool-island__dropdown {
-    flex: 1 1 96px;
-    min-width: 0;
-  }
-
-  .tool-island__dropdown .tool-island__button {
-    width: 100%;
-  }
-
-  .tool-island__menu {
-    right: 50%;
-    width: min(260px, calc(100vw - 48px));
-    transform: translate(50%, 8px) scale(0.98);
-    transform-origin: bottom center;
-  }
-
-  .tool-island__dropdown.is-open .tool-island__menu {
-    transform: translate(50%, 0) scale(1);
-  }
-}
-.code__editor {
+.snapshot-frame .code__editor {
   --editor-padding: 18px;
   --editor-font-size: 16px;
   --editor-line-height: 1.55;
@@ -798,81 +351,50 @@ code {
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-
-  .code__textarea {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    resize: none;
-    border: 0;
-    margin: 0;
-    padding: var(--editor-padding);
-    overflow: auto;
-    background: transparent;
-    color: transparent;
-    caret-color: var(--text-h);
-    font: var(--editor-font-size) / var(--editor-line-height) var(--mono);
-    letter-spacing: 0;
-    tab-size: 2;
-    white-space: pre;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .code__textarea:hover,
-  .code__textarea:focus {
-    outline: none;
-  }
-
-  .code__textarea::selection {
-    background: rgba(224, 148, 78, 0.26);
-  }
-
-  .code__output {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    box-sizing: border-box;
-    padding: var(--editor-padding);
-    overflow: visible;
-    pointer-events: none;
-    transform-origin: 0 0;
-  }
-
-  .code__output .shiki {
-    min-width: 100%;
-    min-height: 100%;
-    margin: 0;
-    overflow: visible;
-    background: transparent !important;
-    font: var(--editor-font-size) / var(--editor-line-height) var(--mono);
-    letter-spacing: 0;
-    tab-size: 2;
-  }
-
-  .code__output code {
-    display: block;
-    padding: 0;
-    background: transparent;
-    font: inherit;
-  }
 }
 
-.code__editor--snapshot {
+.snapshot-frame .code__output {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  padding: var(--editor-padding);
+  overflow: visible;
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.snapshot-frame .code__output .shiki {
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: visible;
+  background: transparent !important;
+  font: var(--editor-font-size) / var(--editor-line-height) var(--mono);
+  letter-spacing: 0;
+  tab-size: 2;
+}
+
+.snapshot-frame .code__output code {
+  display: block;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+}
+
+.snapshot-frame .code__editor--snapshot {
   flex: 0 0 auto;
   min-height: 0;
   overflow: visible;
 }
 
-.code__editor--snapshot .code__output {
+.snapshot-frame .code__editor--snapshot .code__output {
   position: relative;
   z-index: 1;
   inset: auto;
   transform: none;
 }
 
-.code__editor--snapshot .code__output .shiki {
+.snapshot-frame .code__editor--snapshot .code__output .shiki {
   width: max-content;
 }

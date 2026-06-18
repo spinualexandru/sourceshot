@@ -12,6 +12,9 @@ catalogs:
     lit:
       specifier: ^3.3.3
       version: 3.3.3
+    lucide:
+      specifier: ^1.20.0
+      version: 1.20.0
     prettier:
       specifier: ^3.8.4
       version: 3.8.4
@@ -44,6 +47,9 @@ importers:
       lit:
         specifier: 'catalog:'
         version: 3.3.3
+      lucide:
+        specifier: 'catalog:'
+        version: 1.20.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.4
@@ -820,6 +826,9 @@ packages:
   lit@3.3.3:
     resolution: {integrity: sha512-fycuvZg/hkpozL00lm1pEJH5nN/lr9ZXd6mJI2HSN4+Bzc+LDNdEApJ6HFbPkdFNHLvOplIIuJvxkS4XUxqirw==}
 
+  lucide@1.20.0:
+    resolution: {integrity: sha512-j7D9KWJDHYX7L6WBeuUjKkzHqWQHD130tndta0Vf2no9tnxfrFCCQY8wxQ3jeq3Ja7i6k2mJOEUCAVwM0yZF6Q==}
+
   mdast-util-to-hast@13.2.1:
     resolution: {integrity: sha512-cctsq2wp5vTsLIcaymblUriiTcZd0CwWtCbLvrOzYCDZoWyMNV8sZ7krj09FSnsiJi3WVsHLM4k6Dq/yaPyCXA==}
 
@@ -1559,6 +1568,8 @@ snapshots:
       '@lit/reactive-element': 2.1.2
       lit-element: 4.2.2
       lit-html: 3.3.3
+
+  lucide@1.20.0: {}
 
   mdast-util-to-hast@13.2.1:
     dependencies:
