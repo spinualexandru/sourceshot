@@ -144,7 +144,9 @@ export class ToolDropdown extends LitElement {
       isolation: isolate;
       right: 0;
       bottom: calc(100% + 12px);
-      width: 188px;
+      width: max-content;
+      min-width: 188px;
+      max-width: calc(100vw - 48px);
       max-height: min(360px, calc(100svh - 136px));
       box-sizing: border-box;
       overflow: hidden;
