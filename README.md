@@ -6,6 +6,7 @@ Live site: https://spinualexandru.github.io/sourceshot
 
 <img width="1169" height="998" alt="aaaa" src="https://github.com/user-attachments/assets/676b9351-46d6-4851-af2f-bf257bf05027" />
 
+<img width="2190" height="2080" alt="snapshot-page(12)" src="https://github.com/user-attachments/assets/4e1492fd-9f68-4811-864c-75e07aa3d9d1" />
 
 
 ## Features
