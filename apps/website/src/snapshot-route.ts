@@ -3,10 +3,10 @@ import { downloadBlob, openBlobImage } from "./blob-actions.ts";
 import {
   type AppTheme,
   type CodeLanguage,
+  defaultTheme,
   isAppTheme,
   isCodeLanguage,
   languageOptions,
-  themeOptions,
 } from "./code-options.ts";
 import { createPageSnapshotBlob } from "./snapshot-export.ts";
 import { applyTheme } from "./theme.ts";
@@ -49,7 +49,7 @@ function getSnapshotRequestFromHash(hash: string): SnapshotRequest | undefined {
   return {
     code: decodeBase64Code(encodedCode),
     language: isCodeLanguage(requestedLanguage) ? requestedLanguage : languageOptions[0].value,
-    theme: isAppTheme(requestedTheme) ? requestedTheme : themeOptions[0].value,
+    theme: isAppTheme(requestedTheme) ? requestedTheme : defaultTheme,
   };
 }
 

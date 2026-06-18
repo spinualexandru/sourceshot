@@ -1,3 +1,4 @@
+import { Copy, Download, Languages, WandSparkles, createElement, type IconNode } from "lucide";
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { type CodeLanguage, type LanguageOption, languageOptions } from "../code-options.ts";
@@ -62,6 +63,7 @@ export class ToolIsland extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       min-width: 104px;
       height: 48px;
       box-sizing: border-box;
@@ -94,6 +96,22 @@ export class ToolIsland extends LitElement {
         box-shadow 180ms ease,
         color 180ms ease,
         transform 180ms ease;
+    }
+
+    .tool-island__icon {
+      display: block;
+      flex: 0 0 17px;
+      width: 17px;
+      height: 17px;
+      pointer-events: none;
+      stroke-width: 2.25;
+    }
+
+    .tool-island__button-label {
+      min-width: 0;
+      overflow: hidden;
+      line-height: 1.25;
+      text-overflow: ellipsis;
     }
 
     .tool-island__button:hover {
@@ -186,6 +204,14 @@ export class ToolIsland extends LitElement {
     );
   };
 
+  private renderIcon(icon: IconNode) {
+    return createElement(icon, {
+      "aria-hidden": "true",
+      class: "tool-island__icon",
+      focusable: "false",
+    });
+  }
+
   protected override render() {
     return html`
       <button
@@ -195,7 +221,8 @@ export class ToolIsland extends LitElement {
         ?disabled=${this.formatInProgress}
         @click=${() => this.emitAction("format")}
       >
-        Format
+        ${this.renderIcon(WandSparkles)}
+        <span class="tool-island__button-label">Format</span>
       </button>
       <button
         class="tool-island__button"
@@ -204,7 +231,8 @@ export class ToolIsland extends LitElement {
         ?disabled=${this.exportInProgress}
         @click=${() => this.emitAction("export")}
       >
-        Export
+        ${this.renderIcon(Download)}
+        <span class="tool-island__button-label">Export</span>
       </button>
       <button
         class="tool-island__button"
@@ -215,7 +243,8 @@ export class ToolIsland extends LitElement {
         ?disabled=${this.copyInProgress}
         @click=${() => this.emitAction("copy")}
       >
-        Copy
+        ${this.renderIcon(Copy)}
+        <span class="tool-island__button-label">Copy</span>
       </button>
       <tool-dropdown
         button-class-name="tool-island__button"
@@ -225,6 +254,7 @@ export class ToolIsland extends LitElement {
         listbox-label="Programming languages"
         option-data-attribute="data-language"
         .open=${this.languageOpen}
+        .icon=${Languages}
         .options=${this.languageDropdownOptions}
         @tool-dropdown-select=${this.handleLanguageSelect}
       ></tool-dropdown>

@@ -1,3 +1,4 @@
+import { createElement, type IconNode } from "lucide";
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
@@ -40,6 +41,7 @@ export class ToolDropdown extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       min-width: 104px;
       height: 48px;
       box-sizing: border-box;
@@ -94,9 +96,33 @@ export class ToolDropdown extends LitElement {
       gap: 14px;
     }
 
+    .tool-island__select-content {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .tool-island__icon {
+      display: block;
+      flex: 0 0 17px;
+      width: 17px;
+      height: 17px;
+      pointer-events: none;
+      stroke-width: 2.25;
+    }
+
+    .tool-island__label {
+      min-width: 0;
+      overflow: hidden;
+      line-height: 1.25;
+      text-overflow: ellipsis;
+    }
+
     .tool-island__select::after {
       content: "";
       display: block;
+      flex: 0 0 auto;
       width: 7px;
       height: 7px;
       border-right: 2px solid currentColor;
@@ -276,6 +302,9 @@ export class ToolDropdown extends LitElement {
   @property({ type: String })
   label = "";
 
+  @property({ attribute: false })
+  icon?: IconNode;
+
   @property({ type: String, attribute: "label-data-attribute" })
   labelDataAttribute = "";
 
@@ -316,14 +345,26 @@ export class ToolDropdown extends LitElement {
 
   private renderLabel() {
     if (this.labelDataAttribute === "data-language-label") {
-      return html`<span data-language-label>${this.label}</span>`;
+      return html`<span class="tool-island__label" data-language-label>${this.label}</span>`;
     }
 
     if (this.labelDataAttribute === "data-theme-label") {
-      return html`<span data-theme-label>${this.label}</span>`;
+      return html`<span class="tool-island__label" data-theme-label>${this.label}</span>`;
     }
 
-    return html`<span>${this.label}</span>`;
+    return html`<span class="tool-island__label">${this.label}</span>`;
+  }
+
+  private renderIcon() {
+    if (!this.icon) {
+      return null;
+    }
+
+    return createElement(this.icon, {
+      "aria-hidden": "true",
+      class: "tool-island__icon",
+      focusable: "false",
+    });
   }
 
   private renderOption(option: ToolDropdownOption) {
@@ -385,7 +426,9 @@ export class ToolDropdown extends LitElement {
           aria-haspopup="listbox"
           @click=${this.emitToggle}
         >
-          ${this.renderLabel()}
+          <span class="tool-island__select-content"
+            >${this.renderIcon()} ${this.renderLabel()}</span
+          >
         </button>
         <div class="tool-island__menu">
           <div class="tool-island__menu-scroll" role="listbox" aria-label=${this.listboxLabel}>

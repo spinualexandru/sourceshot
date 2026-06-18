@@ -1,4 +1,4 @@
-import { type AppTheme, isAppTheme, themeOptions } from "./code-options.ts";
+import { type AppTheme, defaultTheme, isAppTheme } from "./code-options.ts";
 import { getThemeDefinition, themeCssVariableNames } from "./theme-definitions.ts";
 
 const themeStorageKey = "sourceshot-theme";
@@ -6,9 +6,9 @@ const themeStorageKey = "sourceshot-theme";
 export function getStoredTheme(): AppTheme {
   try {
     const storedTheme = window.localStorage.getItem(themeStorageKey);
-    return isAppTheme(storedTheme) ? storedTheme : themeOptions[0].value;
+    return isAppTheme(storedTheme) ? storedTheme : defaultTheme;
   } catch {
-    return themeOptions[0].value;
+    return defaultTheme;
   }
 }
 

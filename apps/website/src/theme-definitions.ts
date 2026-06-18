@@ -405,7 +405,130 @@ function createMonoCodeTheme({
   } satisfies ThemeRegistration;
 }
 
+function createPaletteCodeTheme({
+  accent,
+  background,
+  comment,
+  displayName,
+  foreground,
+  functionName,
+  keyword,
+  name,
+  number,
+  property,
+  string,
+  type,
+}: {
+  accent: string;
+  background: string;
+  comment: string;
+  displayName: string;
+  foreground: string;
+  functionName: string;
+  keyword: string;
+  name: string;
+  number: string;
+  property: string;
+  string: string;
+  type: "light" | "dark";
+}) {
+  return {
+    name,
+    displayName,
+    type,
+    fg: foreground,
+    bg: background,
+    settings: [
+      {
+        settings: {
+          foreground,
+          background,
+        },
+      },
+      {
+        scope: ["comment", "punctuation.definition.comment"],
+        settings: {
+          foreground: comment,
+          fontStyle: "italic",
+        },
+      },
+      {
+        scope: ["keyword", "storage", "support.type", "entity.name.tag"],
+        settings: {
+          foreground: keyword,
+          fontStyle: "bold",
+        },
+      },
+      {
+        scope: ["entity.name.function", "support.function", "meta.function-call"],
+        settings: {
+          foreground: functionName,
+          fontStyle: "bold",
+        },
+      },
+      {
+        scope: ["string", "constant.character", "markup.inline.raw"],
+        settings: {
+          foreground: string,
+        },
+      },
+      {
+        scope: ["constant", "constant.numeric", "constant.language", "support.constant"],
+        settings: {
+          foreground: number,
+        },
+      },
+      {
+        scope: ["entity.other.attribute-name", "variable.other.property", "variable.parameter"],
+        settings: {
+          foreground: property,
+        },
+      },
+      {
+        scope: ["punctuation", "meta.brace", "meta.delimiter"],
+        settings: {
+          foreground: comment,
+        },
+      },
+      {
+        scope: ["variable", "identifier"],
+        settings: {
+          foreground: accent,
+        },
+      },
+    ],
+  } satisfies ThemeRegistration;
+}
+
 export const customCodeThemes = {
+  "sourceshot-phoenix": createPaletteCodeTheme({
+    name: "sourceshot-phoenix",
+    displayName: "Phoenix Light",
+    type: "light",
+    foreground: sourceShotLightVariables["--text-h"],
+    background: sourceShotLightVariables["--code-bg"],
+    comment: sourceShotLightVariables["--text"],
+    keyword: sourceShotLightVariables["--accent"],
+    functionName: sourceShotLightVariables["--bg-glow-rose"],
+    string: sourceShotLightVariables["--bg-glow-violet"],
+    number: sourceShotLightVariables["--bg"],
+    property: sourceShotLightVariables["--bg-glow-rose"],
+    accent: sourceShotLightVariables["--text-h"],
+  }),
+  "sourceshot-phoenix-dark": createPaletteCodeTheme({
+    name: "sourceshot-phoenix-dark",
+    displayName: "Phoenix Dark",
+    type: "dark",
+    foreground: sourceShotDarkVariables["--text-h"],
+    background: sourceShotDarkVariables["--code-bg"],
+    comment: sourceShotDarkVariables["--text"],
+    keyword: sourceShotDarkVariables["--accent"],
+    functionName: "#e58d68",
+    string: "#d88bb8",
+    number: "#9ee3d6",
+    property: "#c8b6ff",
+    accent: sourceShotDarkVariables["--text-h"],
+  }),
   "sourceshot-mono": createMonoCodeTheme({
     name: "sourceshot-mono",
     displayName: "Mono Light",
@@ -482,16 +605,16 @@ export const customCodeThemes = {
 
 export const appThemeDefinitions = [
   {
-    label: "Light",
+    label: "Phoenix Light",
     value: "light",
-    codeTheme: "vitesse-light",
+    codeTheme: "sourceshot-phoenix",
     colorScheme: "light",
     variables: sourceShotLightVariables,
   },
   {
-    label: "Dark",
+    label: "Phoenix Dark",
     value: "dark",
-    codeTheme: "vitesse-dark",
+    codeTheme: "sourceshot-phoenix-dark",
     colorScheme: "dark",
     variables: sourceShotDarkVariables,
   },

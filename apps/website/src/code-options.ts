@@ -33,6 +33,8 @@ export type ThemeOption = (typeof themeOptions)[number];
 export type AppTheme = ThemeOption["value"];
 export type CodeTheme = ThemeOption["codeTheme"];
 
+export const defaultTheme = "mono" satisfies AppTheme;
+
 export function isCodeLanguage(value: string | null): value is CodeLanguage {
   return languageOptions.some((language) => language.value === value);
 }
@@ -42,5 +44,8 @@ export function isAppTheme(value: string | null): value is AppTheme {
 }
 
 export function getThemeOption(theme: AppTheme) {
-  return themeOptions.find((themeOption) => themeOption.value === theme) ?? themeOptions[0];
+  const defaultThemeOption =
+    themeOptions.find((themeOption) => themeOption.value === defaultTheme) ?? themeOptions[0];
+
+  return themeOptions.find((themeOption) => themeOption.value === theme) ?? defaultThemeOption;
 }

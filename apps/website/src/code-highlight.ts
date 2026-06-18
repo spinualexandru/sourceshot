@@ -8,8 +8,6 @@ import {
 import { resolveCodeLanguage } from "./language-detection.ts";
 import { customCodeThemes } from "./theme-definitions.ts";
 
-const darkPunctuationColor = "#A8B0BD";
-
 let shikiPromise:
   | Promise<{
       codeToHtml: (
@@ -42,8 +40,6 @@ async function getShiki() {
         },
         themes: {
           ...customCodeThemes,
-          "vitesse-dark": () => import("shiki/dist/themes/vitesse-dark.mjs"),
-          "vitesse-light": () => import("shiki/dist/themes/vitesse-light.mjs"),
         },
       });
 
@@ -60,9 +56,5 @@ export async function renderCodeHtml(code: string, language: CodeLanguage, theme
     theme: getThemeOption(theme).codeTheme,
   });
 
-  if (theme !== "dark") {
-    return html;
-  }
-
-  return html.replaceAll("color:#666666", `color:${darkPunctuationColor}`);
+  return html;
 }
