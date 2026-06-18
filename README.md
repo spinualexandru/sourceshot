@@ -8,7 +8,6 @@ Live site: https://spinualexandru.github.io/sourceshot
 
 <img width="2190" height="2080" alt="snapshot-page(12)" src="https://github.com/user-attachments/assets/4e1492fd-9f68-4811-864c-75e07aa3d9d1" />
 
-
 ## Features
 
 - Syntax highlighting with automatic language detection

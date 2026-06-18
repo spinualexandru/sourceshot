@@ -26,13 +26,13 @@
 
   --code-container-border: #ffffff;
   --code-container-bg: #fbf4ee;
-  --code-container-fill-start: 72%;
-  --code-container-fill-mid: 48%;
-  --code-container-shine: 34%;
-  --code-container-top-reflex: 34%;
-  --code-container-border-start: 86%;
-  --code-container-border-end: 96%;
-  --code-container-overlay-opacity: 0.72;
+  --code-container-fill-start: 56%;
+  --code-container-fill-mid: 22%;
+  --code-container-shine: 46%;
+  --code-container-top-reflex: 46%;
+  --code-container-border-start: 96%;
+  --code-container-border-end: 100%;
+  --code-container-overlay-opacity: 0.82;
 
   --sans: system-ui, "Segoe UI", Roboto, sans-serif;
   --heading: system-ui, "Segoe UI", Roboto, sans-serif;
@@ -334,7 +334,7 @@ code {
   box-sizing: border-box;
   background:
     radial-gradient(
-        circle at 18% 0%,
+        circle at 82% 0%,
         color-mix(
             in srgb,
             var(--glass-light) calc(var(--glass-reflex-light) * var(--code-container-top-reflex)),
@@ -344,25 +344,34 @@ code {
         transparent 44%
       )
       padding-box,
+    radial-gradient(
+        circle at 50% 100%,
+        color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 9%), transparent),
+        transparent 48%
+      )
+      padding-box,
     linear-gradient(
         145deg,
         color-mix(in srgb, var(--code-container-bg) var(--code-container-fill-start), transparent),
-        color-mix(in srgb, var(--code-container-bg) var(--code-container-fill-mid), transparent) 46%,
+        color-mix(in srgb, var(--glass) var(--code-container-fill-mid), transparent) 46%,
         color-mix(in srgb, var(--glass-light) var(--code-container-shine), transparent) 100%
       )
       padding-box,
     linear-gradient(
-        315deg,
+        45deg,
         color-mix(in srgb, var(--glass-light) var(--code-container-border-start), transparent),
-        color-mix(in srgb, var(--glass-dark) 10%, transparent) 30%,
-        color-mix(in srgb, var(--glass) 42%, transparent) 58%,
+        color-mix(in srgb, var(--glass-light) 40%, transparent) 22%,
+        color-mix(in srgb, var(--glass-dark) 16%, transparent) 38%,
+        color-mix(in srgb, var(--glass) 48%, transparent) 62%,
+        color-mix(in srgb, var(--glass-dark) 11%, transparent) 78%,
         color-mix(in srgb, var(--glass-light) var(--code-container-border-end), transparent)
       )
       border-box;
-  backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
-  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
+  background-color: color-mix(in srgb, var(--glass) 12%, transparent);
+  backdrop-filter: blur(30px) saturate(var(--glass-saturation)) brightness(1.08);
+  -webkit-backdrop-filter: blur(30px) saturate(var(--glass-saturation)) brightness(1.08);
   border-radius: 32px;
-  border: 8px solid transparent;
+  border: 6px solid transparent;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -370,15 +379,23 @@ code {
   overflow: hidden;
   box-shadow:
     inset 0 0 0 1px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 36%), transparent),
-    inset 2px 4px 0 -2px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 100%), transparent),
-    inset -4px -7px 2px -5px
-      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 74%), transparent),
-    inset -1px 2px 5px -2px
+      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 14%), transparent),
+    inset 2px 3px 0 -2px
+      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 92%), transparent),
+    inset -3px -2px 0 -2px
+      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 78%), transparent),
+    inset -6px -11px 2px -8px
+      color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 62%), transparent),
+    inset -0.5px -1px 5px 0
       color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
-    inset 0 -9px 3px -6px
-      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 8%), transparent),
+    inset -2px 3px 0 -2px
+      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 18%), transparent),
+    inset 0 4px 5px -3px
+      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 16%), transparent),
+    inset 3px -9px 2px -6px
+      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0 1px 6px
+      color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
     0 18px 46px
       color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 18%), transparent);
 }

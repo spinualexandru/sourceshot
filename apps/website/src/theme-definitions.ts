@@ -25,13 +25,13 @@ const sourceShotLightVariables = {
   "--glass-saturation": "150%",
   "--code-container-border": "#ffffff",
   "--code-container-bg": "#fbf4ee",
-  "--code-container-fill-start": "72%",
-  "--code-container-fill-mid": "48%",
-  "--code-container-shine": "34%",
-  "--code-container-top-reflex": "34%",
-  "--code-container-border-start": "86%",
-  "--code-container-border-end": "96%",
-  "--code-container-overlay-opacity": "0.72",
+  "--code-container-fill-start": "56%",
+  "--code-container-fill-mid": "22%",
+  "--code-container-shine": "46%",
+  "--code-container-top-reflex": "46%",
+  "--code-container-border-start": "96%",
+  "--code-container-border-end": "100%",
+  "--code-container-overlay-opacity": "0.82",
 } as const;
 
 type ThemeCssVariableName = keyof typeof sourceShotLightVariables;
@@ -62,13 +62,13 @@ const sourceShotDarkVariables = {
   "--glass-saturation": "176%",
   "--code-container-border": "#2e3340",
   "--code-container-bg": "#11151e",
-  "--code-container-fill-start": "96%",
-  "--code-container-fill-mid": "92%",
-  "--code-container-shine": "10%",
-  "--code-container-top-reflex": "10%",
-  "--code-container-border-start": "28%",
-  "--code-container-border-end": "38%",
-  "--code-container-overlay-opacity": "0.28",
+  "--code-container-fill-start": "48%",
+  "--code-container-fill-mid": "18%",
+  "--code-container-shine": "22%",
+  "--code-container-top-reflex": "28%",
+  "--code-container-border-start": "54%",
+  "--code-container-border-end": "58%",
+  "--code-container-overlay-opacity": "0.42",
 } as const satisfies ThemeCssVariables;
 
 const sourceShotMonoVariables = {
@@ -96,13 +96,13 @@ const sourceShotMonoVariables = {
   "--glass-saturation": "0%",
   "--code-container-border": "#f0f6f0",
   "--code-container-bg": "#edf3ed",
-  "--code-container-fill-start": "88%",
-  "--code-container-fill-mid": "72%",
-  "--code-container-shine": "38%",
+  "--code-container-fill-start": "50%",
+  "--code-container-fill-mid": "18%",
+  "--code-container-shine": "34%",
   "--code-container-top-reflex": "40%",
-  "--code-container-border-start": "92%",
-  "--code-container-border-end": "72%",
-  "--code-container-overlay-opacity": "0.42",
+  "--code-container-border-start": "84%",
+  "--code-container-border-end": "70%",
+  "--code-container-overlay-opacity": "0.5",
 } as const satisfies ThemeCssVariables;
 
 const sourceShotMonoDarkVariables = {
@@ -130,13 +130,13 @@ const sourceShotMonoDarkVariables = {
   "--glass-saturation": "0%",
   "--code-container-border": "#3d403d",
   "--code-container-bg": "#222323",
-  "--code-container-fill-start": "96%",
-  "--code-container-fill-mid": "88%",
-  "--code-container-shine": "8%",
-  "--code-container-top-reflex": "12%",
-  "--code-container-border-start": "28%",
-  "--code-container-border-end": "38%",
-  "--code-container-overlay-opacity": "0.3",
+  "--code-container-fill-start": "42%",
+  "--code-container-fill-mid": "16%",
+  "--code-container-shine": "18%",
+  "--code-container-top-reflex": "28%",
+  "--code-container-border-start": "58%",
+  "--code-container-border-end": "44%",
+  "--code-container-overlay-opacity": "0.48",
 } as const satisfies ThemeCssVariables;
 
 function createMonoCodeTheme({
