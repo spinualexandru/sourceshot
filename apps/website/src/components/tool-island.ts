@@ -5,7 +5,7 @@ import "./tool-dropdown.ts";
 import type { ToolDropdownOption, ToolDropdownSelectEvent } from "./tool-dropdown.ts";
 
 export type ToolIslandActionEvent = CustomEvent<{
-  action: "export" | "format";
+  action: "copy" | "export" | "format";
 }>;
 
 export type ToolIslandLanguageChangeEvent = CustomEvent<{
@@ -140,6 +140,9 @@ export class ToolIsland extends LitElement {
   @property({ type: Boolean, attribute: "export-in-progress" })
   exportInProgress = false;
 
+  @property({ type: Boolean, attribute: "copy-in-progress" })
+  copyInProgress = false;
+
   @property({ type: Boolean, attribute: "format-in-progress" })
   formatInProgress = false;
 
@@ -157,7 +160,7 @@ export class ToolIsland extends LitElement {
     }));
   }
 
-  private emitAction(action: "export" | "format") {
+  private emitAction(action: "copy" | "export" | "format") {
     this.dispatchEvent(
       new CustomEvent("tool-action", {
         bubbles: true,
@@ -202,6 +205,17 @@ export class ToolIsland extends LitElement {
         @click=${() => this.emitAction("export")}
       >
         Export
+      </button>
+      <button
+        class="tool-island__button"
+        type="button"
+        data-action="copy"
+        aria-label="Copy image to clipboard"
+        title="Copy image to clipboard"
+        ?disabled=${this.copyInProgress}
+        @click=${() => this.emitAction("copy")}
+      >
+        Copy
       </button>
       <tool-dropdown
         button-class-name="tool-island__button"

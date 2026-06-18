@@ -126,3 +126,20 @@ export async function downloadPageSnapshot(code: string, language: CodeLanguage,
   const { blob } = await createPageSnapshotBlob(code, language, theme);
   downloadBlob(blob, "snapshot-page.png");
 }
+
+export async function copyPageSnapshotToClipboard(
+  code: string,
+  language: CodeLanguage,
+  theme: AppTheme,
+) {
+  if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+    throw new Error("Image clipboard writes are not supported in this browser.");
+  }
+
+  const { blob } = await createPageSnapshotBlob(code, language, theme);
+  await navigator.clipboard.write([
+    new ClipboardItem({
+      [blob.type]: blob,
+    }),
+  ]);
+}

@@ -20,7 +20,7 @@ import type {
   ToolIslandLanguageChangeEvent,
 } from "./components/tool-island.ts";
 import { initialCode } from "./sample-code.ts";
-import { downloadPageSnapshot } from "./snapshot-export.ts";
+import { copyPageSnapshotToClipboard, downloadPageSnapshot } from "./snapshot-export.ts";
 import { applyTheme, getStoredTheme, storeTheme } from "./theme.ts";
 
 type DropdownName = "language" | "theme";
@@ -58,6 +58,9 @@ export class SourceCodeEditor extends LitElement {
 
   @state()
   private exportInProgress = false;
+
+  @state()
+  private copyInProgress = false;
 
   @state()
   private formatInProgress = false;
@@ -138,6 +141,22 @@ export class SourceCodeEditor extends LitElement {
       console.error("Failed to export snapshot", error);
     } finally {
       this.exportInProgress = false;
+    }
+  };
+
+  private readonly copySnapshot = async () => {
+    if (this.copyInProgress) {
+      return;
+    }
+
+    this.copyInProgress = true;
+
+    try {
+      await copyPageSnapshotToClipboard(this.code, this.selectedLanguage.value, this.selectedTheme);
+    } catch (error: unknown) {
+      console.error("Failed to copy snapshot", error);
+    } finally {
+      this.copyInProgress = false;
     }
   };
 
@@ -228,6 +247,11 @@ export class SourceCodeEditor extends LitElement {
       return;
     }
 
+    if (event.detail.action === "copy") {
+      void this.copySnapshot();
+      return;
+    }
+
     void this.exportSnapshot();
   };
 
@@ -258,6 +282,7 @@ export class SourceCodeEditor extends LitElement {
     return html`
       <tool-island
         aria-label="SourceShot tools"
+        .copyInProgress=${this.copyInProgress}
         .exportInProgress=${this.exportInProgress}
         .formatInProgress=${this.formatInProgress}
         .languageOpen=${this.isDropdownOpen("language")}
