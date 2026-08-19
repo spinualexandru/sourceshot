@@ -1,0 +1,38 @@
+{
+  "name": "@sourceshot/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Framework-agnostic SourceShot primitives shared by the website and the CLI",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck",
+    "format": "oxfmt src package.json tsconfig.json .oxfmtrc.json",
+    "format:check": "oxfmt --check src package.json tsconfig.json .oxfmtrc.json",
+    "lint": "oxlint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "shiki": "catalog:"
+  },
+  "devDependencies": {
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -7,7 +7,7 @@ import {
   isAppTheme,
   isCodeLanguage,
   languageOptions,
-} from "./code-options.ts";
+} from "@sourceshot/core";
 import { createPageSnapshotBlob } from "./snapshot-export.ts";
 import { applyTheme } from "./theme.ts";
 

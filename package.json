@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ready": "vp check && vp run -r build",
+    "ready": "vp check && vp run -r check && vp run -r build",
+    "build": "vp run -r build",
+    "build:cli": "vp run sourceshot-cli#build",
     "build:website": "vp run website#build",
     "dev": "vp run website#dev",
     "prepare": "vp config"

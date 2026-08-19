@@ -1,17 +1,25 @@
 packages:
   - apps/*
+  - packages/*
 
 catalogMode: prefer
 
 catalog:
-  typescript: ^6
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vite-plus: ^0.1.24
-  shiki: ^4.2.0
+  "@types/node": ^26.2.0
+  commander: ^15.0.0
+  "@resvg/resvg-js": ^2.6.2
+  oxfmt: 0.62.0
+  oxlint: 1.77.0
+  typescript: ^7.0.2
+  vite: npm:@voidzero-dev/vite-plus-core@^0.2.9
+  vite-plus: ^0.2.9
+  shiki: ^4.4.3
   html-to-image: ^1.11.13
   lit: ^3.3.3
-  prettier: ^3.8.4
-  lucide: ^1.20.0
+  prettier: ^3.9.6
+  lucide: ^1.31.0
+  satori: ^0.29.0
+  "@types/react": ^19.2.18
 overrides:
   vite: "catalog:"
 peerDependencyRules:

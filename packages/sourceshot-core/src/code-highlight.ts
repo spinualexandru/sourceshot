@@ -1,3 +1,6 @@
+import type { ThemedToken, TokensResult } from "shiki/core";
+
+export type { ThemedToken, TokensResult };
 import {
   type AppTheme,
   type CodeLanguage,
@@ -8,12 +11,20 @@ import {
 import { resolveCodeLanguage } from "./language-detection.ts";
 import { customCodeThemes } from "./theme-definitions.ts";
 
+/**
+ * Shiki's `FontStyle` is a `declare const enum`, which cannot be imported as a value
+ * under `isolatedModules`/`verbatimModuleSyntax`. These mirror its bit flags.
+ */
+export const fontStyleItalic = 1;
+export const fontStyleBold = 2;
+export const fontStyleUnderline = 4;
+
+type HighlightOptions = { lang: SyntaxLanguage; theme: CodeTheme };
+
 let shikiPromise:
   | Promise<{
-      codeToHtml: (
-        code: string,
-        options: { lang: SyntaxLanguage; theme: CodeTheme },
-      ) => Promise<string>;
+      codeToHtml: (code: string, options: HighlightOptions) => Promise<string>;
+      codeToTokens: (code: string, options: HighlightOptions) => Promise<TokensResult>;
     }>
   | undefined;
 
@@ -57,4 +68,17 @@ export async function renderCodeHtml(code: string, language: CodeLanguage, theme
   });
 
   return html;
+}
+
+/**
+ * Same highlighting as `renderCodeHtml`, but returns shiki's token grid instead of
+ * markup. Renderers without an inline formatting context (satori) need this.
+ */
+export async function renderCodeTokens(code: string, language: CodeLanguage, theme: AppTheme) {
+  const { codeToTokens } = await getShiki();
+
+  return await codeToTokens(code || " ", {
+    lang: resolveCodeLanguage(code, language),
+    theme: getThemeOption(theme).codeTheme,
+  });
 }

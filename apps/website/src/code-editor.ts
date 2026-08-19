@@ -6,9 +6,9 @@ import {
   isAppTheme,
   isCodeLanguage,
   languageOptions,
-} from "./code-options.ts";
+  renderCodeHtml,
+} from "@sourceshot/core";
 import { formatCode } from "./code-format.ts";
-import { renderCodeHtml } from "./code-highlight.ts";
 import "./components/code-window.ts";
 import type { SourceCodeWindow } from "./components/code-window.ts";
 import "./components/theme-switcher.ts";

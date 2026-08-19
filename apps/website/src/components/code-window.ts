@@ -1,8 +1,6 @@
 import { LitElement, css, html, type TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { windowDecorationTemplate } from "./window-decoration.ts";
-import "./window-decoration.ts";
 
 type CodeWindowOptions = {
   codeHtml?: string;
@@ -20,7 +18,6 @@ export function renderCodeWindow({
 }: CodeWindowOptions = {}): TemplateResult {
   return html`
     <div class=${`code__container${snapshot ? " code__container--snapshot" : ""}`}>
-      <div class="code__header">${windowDecorationTemplate()}</div>
       <div class=${`code__editor${snapshot ? " code__editor--snapshot" : ""}`}>
         <div class=${`code__output${snapshot ? " code__output--snapshot" : ""}`} aria-hidden="true">
           ${unsafeHTML(codeHtml)}
@@ -135,14 +132,6 @@ export class SourceCodeWindow extends LitElement {
         );
       mix-blend-mode: normal;
       opacity: var(--code-container-overlay-opacity);
-    }
-
-    .code__header {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
     .code__editor {
@@ -311,9 +300,6 @@ export class SourceCodeWindow extends LitElement {
   protected override render() {
     return html`
       <div class="code__container">
-        <div class="code__header">
-          <source-window-decoration></source-window-decoration>
-        </div>
         <div class="code__editor">
           <div class="code__output" aria-hidden="true">${unsafeHTML(this.codeHtml)}</div>
           <textarea

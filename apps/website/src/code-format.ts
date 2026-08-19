@@ -1,6 +1,5 @@
 import type { Options, Plugin } from "prettier";
-import { type CodeLanguage, type SyntaxLanguage } from "./code-options.ts";
-import { resolveCodeLanguage } from "./language-detection.ts";
+import { type CodeLanguage, type SyntaxLanguage, resolveCodeLanguage } from "@sourceshot/core";
 
 type FormatResult = {
   code: string;

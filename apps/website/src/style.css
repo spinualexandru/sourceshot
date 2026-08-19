@@ -308,37 +308,6 @@ body::before {
   opacity: var(--code-container-overlay-opacity);
 }
 
-.snapshot-frame .code__header {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.snapshot-frame .code__window-decoration {
-  display: flex;
-  gap: 8px;
-}
-
-.snapshot-frame .code-window-decoration {
-  width: 16px;
-  height: 16px;
-  border-radius: 16px;
-}
-
-.snapshot-frame .code-window-decoration[data-color="red"] {
-  background-color: #d61613;
-}
-
-.snapshot-frame .code-window-decoration[data-color="yellow"] {
-  background-color: #f5be25;
-}
-
-.snapshot-frame .code-window-decoration[data-color="green"] {
-  background-color: #25f59f;
-}
-
 .snapshot-frame .code__editor {
   --editor-padding: 18px;
   --editor-font-size: 16px;

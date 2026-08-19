@@ -1,0 +1,41 @@
+{
+  "name": "sourceshot-cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Command-line tools for SourceShot",
+  "license": "MIT",
+  "bin": {
+    "sourceshot": "./dist/index.js"
+  },
+  "files": [
+    "assets",
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test",
+    "format": "oxfmt src package.json tsconfig.json .oxfmtrc.json",
+    "format:check": "oxfmt --check src package.json tsconfig.json .oxfmtrc.json",
+    "lint": "oxlint src",
+    "start": "node dist/index.js",
+    "test": "vp test run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "catalog:",
+    "@sourceshot/core": "workspace:*",
+    "commander": "catalog:",
+    "satori": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
