@@ -2,11 +2,12 @@ import { type CodeLanguage, type SyntaxLanguage } from "./code-options.ts";
 
 export function detectCodeLanguage(code: string): SyntaxLanguage {
   const trimmedCode = code.trim();
-  const hasTypeScriptSignals =
+  const hasStrongTypeScriptSignals =
     /\b(?:interface|type|enum)\s+\w+/.test(trimmedCode) ||
     /\bimport\s+type\b/.test(trimmedCode) ||
-    /:\s*[A-Z_a-z][\w<>{}[\], |]*(?:[,)=;]|=>)/.test(trimmedCode) ||
     /\b(?:as\s+const|satisfies\s+\w)/.test(trimmedCode);
+  const hasTypeScriptSignals =
+    hasStrongTypeScriptSignals || /:\s*[A-Z_a-z][\w<>{}[\], |]*(?:[,)=;]|=>)/.test(trimmedCode);
 
   if (!trimmedCode) {
     return "typescript";
@@ -55,6 +56,10 @@ export function detectCodeLanguage(code: string): SyntaxLanguage {
     /\bprint\s*\(|^\s*(?:if|for|while|with|try|except|elif)\b.*:\s*$/m.test(trimmedCode)
   ) {
     return "python";
+  }
+
+  if (hasStrongTypeScriptSignals) {
+    return "typescript";
   }
 
   if (

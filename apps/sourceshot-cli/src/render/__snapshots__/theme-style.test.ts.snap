@@ -1,0 +1,121 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolveThemeStyle > keeps mono gradient stops stable 1`] = `
+{
+  "cardBorder": "linear-gradient(45deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.4) 22%, rgba(34, 35, 35, 0.16) 38%, rgba(240, 246, 240, 0.48) 62%, rgba(34, 35, 35, 0.11) 78%, rgba(255, 255, 255, 0.7))",
+  "cardFill": "linear-gradient(145deg, rgba(237, 243, 237, 0.5), rgba(240, 246, 240, 0.18) 46%, rgba(255, 255, 255, 0.34) 100%)",
+  "cardFillTint": "rgba(255, 255, 255, 1)",
+  "cardGlows": [
+    "radial-gradient(circle at 50% 100%, rgba(34, 35, 35, 0.1062) 0%, rgba(34, 35, 35, 0) 48%)",
+    "radial-gradient(circle at 82% 0%, rgba(255, 255, 255, 0.328) 0%, rgba(255, 255, 255, 0.328) 18%, rgba(255, 255, 255, 0) 44%)",
+  ],
+  "cardHairline": "rgba(255, 255, 255, 0.1148)",
+  "cardOverlay": {
+    "images": [
+      "linear-gradient(115deg, rgba(255, 255, 255, 0.2788), rgba(255, 255, 255, 0) 28%, rgba(34, 35, 35, 0) 70%, rgba(34, 35, 35, 0.0708))",
+      "radial-gradient(circle at 82% 88%, rgba(219, 226, 219, 0.14) 0%, rgba(219, 226, 219, 0) 44%)",
+    ],
+    "opacity": 0.5,
+  },
+  "cardShadow": "0 1px 6px rgba(34, 35, 35, 0.118), 0 18px 46px rgba(34, 35, 35, 0.2124), inset 2px 3px 0 -2px rgba(255, 255, 255, 0.7544), inset -3px -2px 0 -2px rgba(255, 255, 255, 0.6396)",
+  "codeForeground": "#222323",
+  "frameBase": "linear-gradient(135deg, #ffffff, #f0f6f0 38%, #dbe2db 72%, #f8fff8)",
+  "frameGlows": [
+    "radial-gradient(circle at 16% 18%, rgba(248, 255, 248, 0.72) 0%, rgba(248, 255, 248, 0.72) 22%, rgba(248, 255, 248, 0) 50%)",
+    "radial-gradient(circle at 50% 48%, rgba(98, 104, 98, 0.62) 0%, rgba(98, 104, 98, 0.62) 18%, rgba(98, 104, 98, 0) 46%)",
+    "radial-gradient(circle at 78% 22%, rgba(219, 226, 219, 0.76) 0%, rgba(219, 226, 219, 0.76) 20%, rgba(219, 226, 219, 0) 52%)",
+    "radial-gradient(circle at 10% 82%, rgba(255, 255, 255, 0.74) 0%, rgba(255, 255, 255, 0.74) 16%, rgba(255, 255, 255, 0) 42%)",
+  ],
+  "grainOpacity": 0.44,
+}
+`;
+
+exports[`resolveThemeStyle > keeps mono-dark gradient stops stable 1`] = `
+{
+  "cardBorder": "linear-gradient(45deg, rgba(240, 246, 240, 0.58), rgba(240, 246, 240, 0.4) 22%, rgba(0, 0, 0, 0.16) 38%, rgba(48, 52, 49, 0.48) 62%, rgba(0, 0, 0, 0.11) 78%, rgba(240, 246, 240, 0.44))",
+  "cardFill": "linear-gradient(145deg, rgba(23, 26, 24, 0.78), rgba(48, 52, 49, 0.44) 46%, rgba(240, 246, 240, 0.12) 100%)",
+  "cardFillTint": "rgba(48, 48, 48, 1)",
+  "cardGlows": [
+    "radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.171) 0%, rgba(0, 0, 0, 0) 48%)",
+    "radial-gradient(circle at 82% 0%, rgba(240, 246, 240, 0.0612) 0%, rgba(240, 246, 240, 0.0612) 18%, rgba(240, 246, 240, 0) 44%)",
+  ],
+  "cardHairline": "rgba(240, 246, 240, 0.0476)",
+  "cardOverlay": {
+    "images": [
+      "linear-gradient(115deg, rgba(240, 246, 240, 0.1156), rgba(240, 246, 240, 0) 28%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.114))",
+      "radial-gradient(circle at 82% 88%, rgba(61, 64, 61, 0.14) 0%, rgba(61, 64, 61, 0) 44%)",
+    ],
+    "opacity": 0.48,
+  },
+  "cardShadow": "0 1px 6px rgba(0, 0, 0, 0.19), 0 18px 46px rgba(0, 0, 0, 0.342), inset 2px 3px 0 -2px rgba(240, 246, 240, 0.3128), inset -3px -2px 0 -2px rgba(240, 246, 240, 0.2652)",
+  "codeForeground": "#f0f6f0",
+  "frameBase": "linear-gradient(135deg, #697069, #222323 38%, #3d403d 72%, #f0f6f0)",
+  "frameGlows": [
+    "radial-gradient(circle at 16% 18%, rgba(240, 246, 240, 0.72) 0%, rgba(240, 246, 240, 0.72) 22%, rgba(240, 246, 240, 0) 50%)",
+    "radial-gradient(circle at 50% 48%, rgba(17, 18, 18, 0.62) 0%, rgba(17, 18, 18, 0.62) 18%, rgba(17, 18, 18, 0) 46%)",
+    "radial-gradient(circle at 78% 22%, rgba(61, 64, 61, 0.76) 0%, rgba(61, 64, 61, 0.76) 20%, rgba(61, 64, 61, 0) 52%)",
+    "radial-gradient(circle at 10% 82%, rgba(105, 112, 105, 0.74) 0%, rgba(105, 112, 105, 0.74) 16%, rgba(105, 112, 105, 0) 42%)",
+  ],
+  "grainOpacity": 0.36,
+}
+`;
+
+exports[`resolveThemeStyle > keeps ocean gradient stops stable 1`] = `
+{
+  "cardBorder": "linear-gradient(45deg, rgba(243, 254, 255, 0.92), rgba(243, 254, 255, 0.4) 22%, rgba(20, 43, 87, 0.16) 38%, rgba(183, 220, 227, 0.48) 62%, rgba(20, 43, 87, 0.11) 78%, rgba(243, 254, 255, 0.82))",
+  "cardFill": "linear-gradient(145deg, rgba(232, 246, 247, 0.54), rgba(183, 220, 227, 0.24) 46%, rgba(243, 254, 255, 0.42) 100%)",
+  "cardFillTint": "rgba(146, 227, 255, 1)",
+  "cardGlows": [
+    "radial-gradient(circle at 50% 100%, rgba(20, 43, 87, 0.117) 0%, rgba(20, 43, 87, 0) 48%)",
+    "radial-gradient(circle at 82% 0%, rgba(243, 254, 255, 0.396) 0%, rgba(243, 254, 255, 0.396) 18%, rgba(243, 254, 255, 0) 44%)",
+  ],
+  "cardHairline": "rgba(243, 254, 255, 0.126)",
+  "cardOverlay": {
+    "images": [
+      "linear-gradient(115deg, rgba(243, 254, 255, 0.306), rgba(243, 254, 255, 0) 28%, rgba(20, 43, 87, 0) 70%, rgba(20, 43, 87, 0.078))",
+      "radial-gradient(circle at 82% 88%, rgba(65, 150, 195, 0.14) 0%, rgba(65, 150, 195, 0) 44%)",
+    ],
+    "opacity": 0.58,
+  },
+  "cardShadow": "0 1px 6px rgba(20, 43, 87, 0.13), 0 18px 46px rgba(20, 43, 87, 0.234), inset 2px 3px 0 -2px rgba(243, 254, 255, 0.828), inset -3px -2px 0 -2px rgba(243, 254, 255, 0.702)",
+  "codeForeground": "#142b57",
+  "frameBase": "linear-gradient(135deg, #f3feff, #d2ebed 38%, #4196c3 72%, #8ac8dd)",
+  "frameGlows": [
+    "radial-gradient(circle at 16% 18%, rgba(138, 200, 221, 0.72) 0%, rgba(138, 200, 221, 0.72) 22%, rgba(138, 200, 221, 0) 50%)",
+    "radial-gradient(circle at 50% 48%, rgba(61, 92, 156, 0.62) 0%, rgba(61, 92, 156, 0.62) 18%, rgba(61, 92, 156, 0) 46%)",
+    "radial-gradient(circle at 78% 22%, rgba(65, 150, 195, 0.76) 0%, rgba(65, 150, 195, 0.76) 20%, rgba(65, 150, 195, 0) 52%)",
+    "radial-gradient(circle at 10% 82%, rgba(243, 254, 255, 0.74) 0%, rgba(243, 254, 255, 0.74) 16%, rgba(243, 254, 255, 0) 42%)",
+  ],
+  "grainOpacity": 0.48,
+}
+`;
+
+exports[`resolveThemeStyle > keeps peach gradient stops stable 1`] = `
+{
+  "cardBorder": "linear-gradient(45deg, rgba(255, 250, 248, 0.92), rgba(255, 250, 248, 0.4) 22%, rgba(106, 41, 44, 0.16) 38%, rgba(247, 207, 197, 0.48) 62%, rgba(106, 41, 44, 0.11) 78%, rgba(255, 250, 248, 0.82))",
+  "cardFill": "linear-gradient(145deg, rgba(255, 248, 245, 0.54), rgba(247, 207, 197, 0.24) 46%, rgba(255, 250, 248, 0.42) 100%)",
+  "cardFillTint": "rgba(255, 196, 160, 1)",
+  "cardGlows": [
+    "radial-gradient(circle at 50% 100%, rgba(106, 41, 44, 0.1152) 0%, rgba(106, 41, 44, 0) 48%)",
+    "radial-gradient(circle at 82% 0%, rgba(255, 250, 248, 0.3872) 0%, rgba(255, 250, 248, 0.3872) 18%, rgba(255, 250, 248, 0) 44%)",
+  ],
+  "cardHairline": "rgba(255, 250, 248, 0.1232)",
+  "cardOverlay": {
+    "images": [
+      "linear-gradient(115deg, rgba(255, 250, 248, 0.2992), rgba(255, 250, 248, 0) 28%, rgba(106, 41, 44, 0) 70%, rgba(106, 41, 44, 0.0768))",
+      "radial-gradient(circle at 82% 88%, rgba(251, 104, 56, 0.14) 0%, rgba(251, 104, 56, 0) 44%)",
+    ],
+    "opacity": 0.58,
+  },
+  "cardShadow": "0 1px 6px rgba(106, 41, 44, 0.128), 0 18px 46px rgba(106, 41, 44, 0.2304), inset 2px 3px 0 -2px rgba(255, 250, 248, 0.8096), inset -3px -2px 0 -2px rgba(255, 250, 248, 0.6864)",
+  "codeForeground": "#4f2527",
+  "frameBase": "linear-gradient(135deg, #fffaf8, #f5ebe7 38%, #fb6838 72%, #ffd4c5)",
+  "frameGlows": [
+    "radial-gradient(circle at 16% 18%, rgba(255, 212, 197, 0.72) 0%, rgba(255, 212, 197, 0.72) 22%, rgba(255, 212, 197, 0) 50%)",
+    "radial-gradient(circle at 50% 48%, rgba(185, 71, 67, 0.62) 0%, rgba(185, 71, 67, 0.62) 18%, rgba(185, 71, 67, 0) 46%)",
+    "radial-gradient(circle at 78% 22%, rgba(251, 104, 56, 0.76) 0%, rgba(251, 104, 56, 0.76) 20%, rgba(251, 104, 56, 0) 52%)",
+    "radial-gradient(circle at 10% 82%, rgba(255, 250, 248, 0.74) 0%, rgba(255, 250, 248, 0.74) 16%, rgba(255, 250, 248, 0) 42%)",
+  ],
+  "grainOpacity": 0.46,
+}
+`;

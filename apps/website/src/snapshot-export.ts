@@ -1,33 +1,23 @@
 import { render } from "lit";
-import { type AppTheme, type CodeLanguage } from "./code-options.ts";
-import { renderCodeHtml } from "./code-highlight.ts";
+import {
+  type AppTheme,
+  type CodeLanguage,
+  getSnapshotPadding,
+  getSnapshotPixelRatio,
+  maxSnapshotWidth,
+  minSnapshotHeight,
+  minSnapshotWidth,
+  renderCodeHtml,
+} from "@sourceshot/core";
 import { renderCodeWindow } from "./components/code-window.ts";
 import { downloadBlob } from "./blob-actions.ts";
 import { applyThemeProperties } from "./theme.ts";
-
-const maxSnapshotWidth = 1280;
-const minSnapshotWidth = 320;
-const minSnapshotHeight = 220;
 
 let htmlToImagePromise: Promise<typeof import("html-to-image")> | undefined;
 
 async function getHtmlToImage() {
   htmlToImagePromise ??= import("html-to-image");
   return htmlToImagePromise;
-}
-
-function getSnapshotPixelRatio(width: number, height: number) {
-  const highQualityRatio = 2;
-  const maxCanvasDimension = 8192;
-  const maxCanvasArea = 24_000_000;
-  const dimensionRatio = Math.min(maxCanvasDimension / width, maxCanvasDimension / height);
-  const areaRatio = Math.sqrt(maxCanvasArea / (width * height));
-
-  return Math.max(1, Math.min(highQualityRatio, dimensionRatio, areaRatio));
-}
-
-function getSnapshotPadding(width: number) {
-  return width <= 560 ? 28 : 64;
 }
 
 function waitForLayout() {

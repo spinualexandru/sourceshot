@@ -1,6 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { type AppTheme, defaultTheme, getThemeOption, themeOptions } from "../code-options.ts";
+import { type AppTheme, defaultTheme, getThemeOption, themeOptions } from "@sourceshot/core";
 import "./tool-dropdown.ts";
 import type { ToolDropdownOption, ToolDropdownSelectEvent } from "./tool-dropdown.ts";
 

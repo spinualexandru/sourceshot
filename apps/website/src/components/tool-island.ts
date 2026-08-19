@@ -1,7 +1,7 @@
 import { Copy, Download, Languages, WandSparkles, createElement, type IconNode } from "lucide";
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { type CodeLanguage, type LanguageOption, languageOptions } from "../code-options.ts";
+import { type CodeLanguage, type LanguageOption, languageOptions } from "@sourceshot/core";
 import "./tool-dropdown.ts";
 import type { ToolDropdownOption, ToolDropdownSelectEvent } from "./tool-dropdown.ts";
 

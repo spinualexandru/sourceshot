@@ -1,5 +1,10 @@
-import { type AppTheme, defaultTheme, isAppTheme } from "./code-options.ts";
-import { getThemeDefinition, themeCssVariableNames } from "./theme-definitions.ts";
+import {
+  type AppTheme,
+  defaultTheme,
+  getThemeDefinition,
+  isAppTheme,
+  themeCssVariableNames,
+} from "@sourceshot/core";
 
 const themeStorageKey = "sourceshot-theme";
 

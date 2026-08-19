@@ -9,11 +9,11 @@
     "preview": "vp preview"
   },
   "dependencies": {
+    "@sourceshot/core": "workspace:*",
     "html-to-image": "catalog:",
     "lit": "catalog:",
     "lucide": "catalog:",
-    "prettier": "catalog:",
-    "shiki": "catalog:"
+    "prettier": "catalog:"
   },
   "devDependencies": {
     "typescript": "catalog:",
