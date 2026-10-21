@@ -1,4 +1,4 @@
-import { type ThemedToken, codeTabSize, fontStyleBold, fontStyleItalic } from "@sourceshot/core";
+import { type ThemedToken, codeTabSize } from "@sourceshot/core";
 
 export type CodeSpan = { text: string; color: string; bold: boolean; italic: boolean };
 export type CodeLine = { spans: CodeSpan[]; columns: number };
@@ -77,12 +77,11 @@ export function toCodeLines(tokens: ThemedToken[][], fallbackColor: string): Cod
         continue;
       }
 
-      const fontStyle = token.fontStyle ?? 0;
       spans.push({
         text: expanded.text,
         color: token.color ?? fallbackColor,
-        bold: (fontStyle & fontStyleBold) !== 0,
-        italic: (fontStyle & fontStyleItalic) !== 0,
+        bold: token.bold ?? false,
+        italic: token.italic ?? false,
       });
     }
 
@@ -94,7 +93,7 @@ export function toCodeLines(tokens: ThemedToken[][], fallbackColor: string): Cod
  * Drops the blank lines a trailing newline leaves behind.
  *
  * Ending a file with a newline is a convention, not content, and rendering the empty
- * line shiki reports for it leaves an unbalanced gap under the last line of code.
+ * line the highlighter reports for it leaves an unbalanced gap under the last line of code.
  */
 export function trimTrailingBlankLines(lines: readonly CodeLine[]): CodeLine[] {
   let end = lines.length;

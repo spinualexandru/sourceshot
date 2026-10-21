@@ -1,4 +1,4 @@
-import type { ThemeRegistration } from "shiki/core";
+import type { TokenType } from "@vortexlabs/kirari/core";
 
 const sourceShotMonoVariables = {
   "--text": "#4f554f",
@@ -139,6 +139,17 @@ const sourceShotOceanVariables = {
   "--code-container-overlay-opacity": "0.58",
 } as const satisfies ThemeCssVariables;
 
+export type CodeTokenStyle = { color: string; bold: boolean; italic: boolean };
+
+export type CodeThemeDefinition = {
+  name: string;
+  displayName: string;
+  type: "light" | "dark";
+  foreground: string;
+  background: string;
+  tokens: Readonly<Record<TokenType, CodeTokenStyle>>;
+};
+
 function createCodeTheme({
   background,
   comment,
@@ -163,87 +174,42 @@ function createCodeTheme({
   string: string;
   type: "light" | "dark";
   typeName: string;
-}) {
+}): CodeThemeDefinition {
+  const style = (color: string, fontStyle: "bold" | "italic" | "" = "") => ({
+    color,
+    bold: fontStyle === "bold",
+    italic: fontStyle === "italic",
+  });
+
   return {
     name,
     displayName,
     type,
-    fg: foreground,
-    bg: background,
-    settings: [
-      {
-        settings: {
-          foreground,
-          background,
-        },
-      },
-      {
-        scope: ["comment", "punctuation.definition.comment"],
-        settings: {
-          foreground: comment,
-          fontStyle: "italic",
-        },
-      },
-      {
-        scope: ["keyword", "storage", "entity.name.tag"],
-        settings: {
-          foreground: keyword,
-          fontStyle: "bold",
-        },
-      },
-      {
-        scope: [
-          "keyword.operator",
-          "keyword.operator.assignment",
-          "keyword.operator.type",
-          "storage.type.function.arrow",
-        ],
-        settings: {
-          foreground: comment,
-          fontStyle: "",
-        },
-      },
-      {
-        scope: [
-          "entity.name.class",
-          "entity.name.type",
-          "entity.other.inherited-class",
-          "support.class",
-          "support.type",
-        ],
-        settings: {
-          foreground: typeName,
-          fontStyle: "bold",
-        },
-      },
-      {
-        scope: ["entity.name.function", "support.function", "variable.function"],
-        settings: {
-          foreground: functionName,
-          fontStyle: "bold",
-        },
-      },
-      {
-        scope: ["string", "constant.character", "markup.inline.raw"],
-        settings: {
-          foreground: string,
-        },
-      },
-      {
-        scope: ["constant", "constant.language", "constant.numeric", "support.constant"],
-        settings: {
-          foreground: literal,
-          fontStyle: "bold",
-        },
-      },
-      {
-        scope: ["punctuation", "meta.brace", "meta.delimiter"],
-        settings: {
-          foreground: comment,
-        },
-      },
-    ],
-  } satisfies ThemeRegistration;
+    foreground,
+    background,
+    tokens: {
+      text: style(foreground),
+      variable: style(foreground),
+      property: style(foreground),
+      attribute: style(foreground),
+      heading: style(foreground, "bold"),
+      comment: style(comment, "italic"),
+      keyword: style(keyword, "bold"),
+      tag: style(keyword, "bold"),
+      deleted: style(keyword),
+      operator: style(comment),
+      punctuation: style(comment),
+      type: style(typeName, "bold"),
+      function: style(functionName, "bold"),
+      string: style(string),
+      regex: style(string),
+      entity: style(string),
+      inserted: style(string),
+      number: style(literal, "bold"),
+      boolean: style(literal, "bold"),
+      null: style(literal, "bold"),
+    },
+  };
 }
 
 export const customCodeThemes = {
@@ -299,7 +265,7 @@ export const customCodeThemes = {
     string: "#176983",
     literal: "#80518f",
   }),
-} as const satisfies Record<string, ThemeRegistration>;
+} as const satisfies Record<string, CodeThemeDefinition>;
 
 export const appThemeDefinitions = [
   {

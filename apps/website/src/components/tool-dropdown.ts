@@ -166,12 +166,15 @@ export class ToolDropdown extends LitElement {
         0 18px 38px
           color-mix(in srgb, var(--glass-dark) calc(var(--glass-reflex-dark) * 16%), transparent);
       opacity: 0;
+      /* Hidden, not just transparent, so a closed menu's options leave the tab order. */
+      visibility: hidden;
       pointer-events: none;
       transform: translateY(8px) scale(0.98);
       transform-origin: bottom right;
       transition:
         opacity 160ms ease,
-        transform 160ms ease;
+        transform 160ms ease,
+        visibility 0s linear 160ms;
     }
 
     .tool-island__menu-scroll {
@@ -209,8 +212,10 @@ export class ToolDropdown extends LitElement {
 
     .tool-island__dropdown.is-open .tool-island__menu {
       opacity: 1;
+      visibility: visible;
       pointer-events: auto;
       transform: translateY(0) scale(1);
+      transition-delay: 0s;
     }
 
     :host([placement="below"]) .tool-island__menu {
@@ -275,15 +280,9 @@ export class ToolDropdown extends LitElement {
         min-width: 0;
       }
 
+      /* Right-aligned like on desktop: centring it on the rightmost tool pushed it off-screen. */
       .tool-island__menu {
-        right: 50%;
         width: min(260px, calc(100vw - 48px));
-        transform: translate(50%, 8px) scale(0.98);
-        transform-origin: bottom center;
-      }
-
-      .tool-island__dropdown.is-open .tool-island__menu {
-        transform: translate(50%, 0) scale(1);
       }
 
       :host([placement="below"]) .tool-island__menu,
