@@ -253,6 +253,8 @@ export class ToolIsland extends LitElement {
         label-data-attribute="data-language-label"
         listbox-label="Programming languages"
         option-data-attribute="data-language"
+        search-placeholder="Search languages"
+        searchable
         .open=${this.languageOpen}
         .icon=${Languages}
         .options=${this.languageDropdownOptions}

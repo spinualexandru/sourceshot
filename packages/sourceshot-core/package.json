@@ -19,20 +19,18 @@
   "scripts": {
     "build": "tsc",
     "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck",
-    "format": "oxfmt src package.json tsconfig.json .oxfmtrc.json",
-    "format:check": "oxfmt --check src package.json tsconfig.json .oxfmtrc.json",
-    "lint": "oxlint src",
+    "format": "vp fmt src package.json tsconfig.json .oxfmtrc.json",
+    "format:check": "vp fmt --check src package.json tsconfig.json .oxfmtrc.json",
+    "lint": "vp lint src",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@vortexlabs/kirari": "catalog:"
   },
   "devDependencies": {
-    "oxfmt": "catalog:",
-    "oxlint": "catalog:",
     "typescript": "catalog:"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.18.0"
   }
 }

@@ -1,6 +1,6 @@
-import { createElement, type IconNode } from "lucide";
-import { LitElement, css, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { Search, X, createElement, type IconNode } from "lucide";
+import { LitElement, css, html, type PropertyValues } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 
 export type ToolDropdownOption = {
   label: string;
@@ -144,6 +144,8 @@ export class ToolDropdown extends LitElement {
       isolation: isolate;
       right: 0;
       bottom: calc(100% + 12px);
+      display: flex;
+      flex-direction: column;
       width: max-content;
       min-width: 188px;
       max-width: calc(100vw - 48px);
@@ -182,11 +184,114 @@ export class ToolDropdown extends LitElement {
       z-index: 1;
       display: grid;
       gap: 4px;
-      max-height: min(360px, calc(100svh - 136px));
+      flex: 1 1 auto;
+      min-height: 0;
       box-sizing: border-box;
       padding: 8px;
       overflow: auto;
       border-radius: inherit;
+    }
+
+    .tool-island__menu-options {
+      display: grid;
+      gap: 4px;
+    }
+
+    .tool-island__menu-search {
+      position: relative;
+      z-index: 1;
+      display: block;
+      flex: 0 0 auto;
+      padding: 8px 8px 0;
+    }
+
+    .tool-island__search-input {
+      appearance: none;
+      display: block;
+      width: 100%;
+      height: 38px;
+      box-sizing: border-box;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 34px;
+      color: var(--text-h);
+      background-color: color-mix(in srgb, var(--glass) 42%, transparent);
+      font: 650 14px/1 var(--sans);
+      letter-spacing: 0;
+      outline: none;
+      box-shadow: inset 0 0 0 1px
+        color-mix(in srgb, var(--glass-light) calc(var(--glass-reflex-light) * 16%), transparent);
+    }
+
+    .tool-island__search-input::placeholder {
+      color: var(--text);
+    }
+
+    .tool-island__search-input:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--accent) 82%, white);
+      outline-offset: 3px;
+    }
+
+    .tool-island__search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      width: 15px;
+      height: 15px;
+      color: var(--text);
+      pointer-events: none;
+      stroke-width: 2.25;
+      translate: 0 -50%;
+    }
+
+    .tool-island__search-clear {
+      appearance: none;
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      box-sizing: border-box;
+      border: 0;
+      border-radius: 999px;
+      padding: 0;
+      color: var(--text);
+      background: transparent;
+      cursor: pointer;
+      translate: 0 -50%;
+      transition:
+        background-color 140ms ease,
+        color 140ms ease;
+    }
+
+    .tool-island__search-clear:hover {
+      color: var(--accent);
+      background-color: color-mix(in srgb, var(--glass) 42%, transparent);
+    }
+
+    .tool-island__search-clear:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--accent) 82%, white);
+      outline-offset: 3px;
+    }
+
+    .tool-island__search-clear-icon {
+      display: block;
+      width: 13px;
+      height: 13px;
+      stroke-width: 2.25;
+    }
+
+    .tool-island__menu-empty {
+      display: flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 12px;
+      color: var(--text);
+      font: 650 14px/1.25 var(--sans);
+      letter-spacing: 0;
     }
 
     .tool-island__menu::before {
@@ -321,8 +426,66 @@ export class ToolDropdown extends LitElement {
   @property({ attribute: false })
   options: ToolDropdownOption[] = [];
 
+  @property({ type: Boolean })
+  searchable = false;
+
+  @property({ type: String, attribute: "search-placeholder" })
+  searchPlaceholder = "Search…";
+
   @property({ type: String, reflect: true })
   placement: "above" | "below" = "above";
+
+  @state()
+  private searchQuery = "";
+
+  protected override willUpdate(changedProperties: PropertyValues<this>): void {
+    if (changedProperties.has("open") && !this.open) {
+      this.searchQuery = "";
+    }
+  }
+
+  protected override updated(changedProperties: PropertyValues<this>): void {
+    if (!this.searchable || !changedProperties.has("open") || !this.open) {
+      return;
+    }
+
+    this.renderRoot.querySelector<HTMLInputElement>(".tool-island__search-input")?.focus({
+      preventScroll: true,
+    });
+  }
+
+  private get filteredOptions(): ToolDropdownOption[] {
+    const query = this.searchQuery.trim().toLowerCase();
+
+    if (!this.searchable || !query) {
+      return this.options;
+    }
+
+    return this.options.filter(
+      (option) =>
+        option.label.toLowerCase().includes(query) || option.value.toLowerCase().includes(query),
+    );
+  }
+
+  private readonly handleSearchInput = (event: Event) => {
+    this.searchQuery = (event.currentTarget as HTMLInputElement).value;
+  };
+
+  private readonly handleSearchKeydown = (event: KeyboardEvent) => {
+    // Let the first Escape clear the filter; the next one closes the menu.
+    if (event.key === "Escape" && this.searchQuery) {
+      event.stopPropagation();
+      this.clearSearch();
+    }
+  };
+
+  private readonly clearSearch = () => {
+    this.searchQuery = "";
+
+    this.renderRoot.querySelector<HTMLInputElement>(".tool-island__search-input")?.focus({
+      preventScroll: true,
+    });
+  };
 
   private readonly emitToggle = () => {
     this.dispatchEvent(
@@ -414,7 +577,56 @@ export class ToolDropdown extends LitElement {
     `;
   }
 
+  private renderSearch() {
+    return html`
+      <div class="tool-island__menu-search">
+        ${createElement(Search, {
+          "aria-hidden": "true",
+          class: "tool-island__search-icon",
+          focusable: "false",
+        })}
+        <input
+          class="tool-island__search-input"
+          type="text"
+          size="1"
+          autocomplete="off"
+          spellcheck="false"
+          enterkeyhint="search"
+          placeholder=${this.searchPlaceholder}
+          aria-label=${this.searchPlaceholder}
+          .value=${this.searchQuery}
+          @input=${this.handleSearchInput}
+          @keydown=${this.handleSearchKeydown}
+        />
+        ${
+          this.searchQuery
+            ? html`
+                <button
+                  class="tool-island__search-clear"
+                  type="button"
+                  aria-label="Clear search"
+                  @click=${this.clearSearch}
+                >
+                  ${createElement(X, {
+                    "aria-hidden": "true",
+                    class: "tool-island__search-clear-icon",
+                    focusable: "false",
+                  })}
+                </button>
+              `
+            : null
+        }
+      </div>
+    `;
+  }
+
+  private renderNoMatches() {
+    return html`<div class="tool-island__menu-empty">No matches</div>`;
+  }
+
   protected override render() {
+    const options = this.filteredOptions;
+
     return html`
       <div
         class=${`tool-island__dropdown${this.open ? " is-open" : ""}`}
@@ -432,8 +644,12 @@ export class ToolDropdown extends LitElement {
           >
         </button>
         <div class="tool-island__menu">
-          <div class="tool-island__menu-scroll" role="listbox" aria-label=${this.listboxLabel}>
-            ${this.options.map((option) => this.renderOption(option))}
+          ${this.searchable ? this.renderSearch() : null}
+          <div class="tool-island__menu-scroll">
+            <div class="tool-island__menu-options" role="listbox" aria-label=${this.listboxLabel}>
+              ${options.map((option) => this.renderOption(option))}
+            </div>
+            ${this.searchable && options.length === 0 ? this.renderNoMatches() : null}
           </div>
         </div>
       </div>
