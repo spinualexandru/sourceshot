@@ -36,8 +36,8 @@ describe("toCodeLines", () => {
     expect(line.columns).toBe(1);
   });
 
-  it("maps shiki font style bits onto bold and italic", () => {
-    const [line] = toCodeLines([[{ content: "k", offset: 0, fontStyle: 3 as never }]], "#000");
+  it("carries token bold and italic onto the span", () => {
+    const [line] = toCodeLines([[{ content: "k", offset: 0, bold: true, italic: true }]], "#000");
 
     expect(line.spans[0]).toMatchObject({ bold: true, italic: true });
   });

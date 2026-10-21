@@ -1,25 +1,16 @@
-import { type CodeLanguage, languageOptions } from "@sourceshot/core";
-import { extname } from "node:path";
-
-const byExtension = new Map<string, CodeLanguage>(
-  languageOptions
-    .filter((option) => option.value !== "auto")
-    .map((option) => [option.extension, option.value]),
-);
-
-/** Extensions the single-extension option list cannot express. */
-const aliases = new Map<string, CodeLanguage>([
-  ["mjs", "javascript"],
-  ["cjs", "javascript"],
-  ["mts", "typescript"],
-  ["cts", "typescript"],
-  ["htm", "html"],
-  ["jsonc", "json"],
-  ["markdown", "markdown"],
-]);
+import { type CodeLanguage, isCodeLanguage } from "@sourceshot/core";
+import * as languages from "@vortexlabs/kirari/languages";
+import { createRegistry } from "@vortexlabs/kirari/registry";
 
 /**
- * Returns "auto" when the extension is unknown, letting shiki's content-based
+ * Kirari's registry knows every grammar's extensions and well-known filenames
+ * (`Dockerfile`, `Makefile`, `.env`, `nginx.conf`, ...). Its language names are the
+ * same strings SourceShot uses as language values.
+ */
+const registry = createRegistry(Object.values(languages));
+
+/**
+ * Returns "auto" when the file is unknown, letting the content-based
  * detection take over inside `renderCodeTokens`.
  */
 export function inferLanguage(requested: CodeLanguage, file: string | undefined): CodeLanguage {
@@ -27,6 +18,6 @@ export function inferLanguage(requested: CodeLanguage, file: string | undefined)
     return requested;
   }
 
-  const extension = extname(file).slice(1).toLowerCase();
-  return byExtension.get(extension) ?? aliases.get(extension) ?? "auto";
+  const name = registry.resolve(file)?.name ?? null;
+  return isCodeLanguage(name) ? name : "auto";
 }

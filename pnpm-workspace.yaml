@@ -13,7 +13,7 @@ catalog:
   typescript: ^7.0.2
   vite: npm:@voidzero-dev/vite-plus-core@^0.2.9
   vite-plus: ^0.2.9
-  shiki: ^4.4.3
+  "@vortexlabs/kirari": ^1.1.0
   html-to-image: ^1.11.13
   lit: ^3.3.3
   prettier: ^3.9.6
@@ -27,3 +27,5 @@ peerDependencyRules:
     - vite
   allowedVersions:
     vite: "*"
+minimumReleaseAgeExclude:
+  - "@vortexlabs/kirari@1.1.0"

@@ -19,7 +19,9 @@ export { detectCodeLanguage, resolveCodeLanguage } from "./language-detection.ts
 export {
   type AppThemeDefinition,
   type AppThemeValue,
+  type CodeThemeDefinition,
   type CodeThemeName,
+  type CodeTokenStyle,
   type ThemeCssVariables,
   appThemeDefinitions,
   customCodeThemes,
@@ -30,9 +32,6 @@ export {
 export {
   type ThemedToken,
   type TokensResult,
-  fontStyleBold,
-  fontStyleItalic,
-  fontStyleUnderline,
   renderCodeHtml,
   renderCodeTokens,
 } from "./code-highlight.ts";

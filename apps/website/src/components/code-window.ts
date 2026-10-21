@@ -190,7 +190,7 @@ export class SourceCodeWindow extends LitElement {
       transform-origin: 0 0;
     }
 
-    .code__output .shiki {
+    .code__output .code-highlight {
       min-width: 100%;
       min-height: 100%;
       margin: 0;

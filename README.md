@@ -11,10 +11,22 @@ Live site: https://spinualexandru.github.io/sourceshot
 ## Features
 
 - Syntax highlighting with automatic language detection
-- Manual language selection for common code formats
+- Manual selection from every language [kirari](https://kirari.sh) supports (see below)
 - One-click PNG export
 - Hash-based snapshot rendering for generated links
 - A CLI that renders the same snapshots without a browser
+
+## Supported languages
+
+C, C#, C++, Clojure, CSS, Dart, Diff, Dockerfile, Dotenv, Elixir, GLSL, Go, GraphQL, Groovy,
+HCL, HTML, INI, Java, JavaScript, JSON, JSONC, JSX, Julia, Kotlin, Lua, Makefile, Markdown,
+Nginx, PHP, Plain text, PowerShell, Protocol Buffers, Python, R, Ruby, Rust, Scala, Shell, SQL,
+Svelte, Swift, TOML, TSX, TypeScript, Vue, XML, YAML and Zig.
+
+Automatic detection from the code itself recognizes TypeScript, JavaScript, TSX, JSX, Python,
+Go, Rust, HTML, CSS, JSON and Markdown. Pick any other language explicitly, with the language
+menu, `lang=` in the URL hash, or `--lang` in the CLI. Those two take lowercase names such as
+`csharp`, `cpp`, `shell` or `plaintext`; `sourceshot --help` lists every one.
 
 ## Hash-based snapshot rendering
 
@@ -56,7 +68,8 @@ node apps/sourceshot-cli/dist/index.js sample.ts --stdout | wl-copy
 | `--grain <0..1>`         | Film grain strength.                                                             |
 | `--debug-svg <path>`     | Also write the intermediate SVG.                                                 |
 
-Language is inferred from the file extension first, then from the content.
+Language is inferred from the file extension or a well-known filename (`Dockerfile`, `Makefile`,
+`.env`, `nginx.conf`) first, then from the content.
 Exit codes: `0` success, `1` render failure, `2` usage or invalid input, `3` environment
 problem such as a missing clipboard helper.
 

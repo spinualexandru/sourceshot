@@ -333,7 +333,7 @@ body::before {
   transform-origin: 0 0;
 }
 
-.snapshot-frame .code__output .shiki {
+.snapshot-frame .code__output .code-highlight {
   min-width: 100%;
   min-height: 100%;
   margin: 0;
@@ -364,6 +364,6 @@ body::before {
   transform: none;
 }
 
-.snapshot-frame .code__editor--snapshot .code__output .shiki {
+.snapshot-frame .code__editor--snapshot .code__output .code-highlight {
   width: max-content;
 }
