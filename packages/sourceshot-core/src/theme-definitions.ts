@@ -1,5 +1,3 @@
-import type { TokenType } from "@vortexlabs/kirari/core";
-
 const sourceShotMonoVariables = {
   "--text": "#4f554f",
   "--text-h": "#222323",
@@ -139,6 +137,29 @@ const sourceShotOceanVariables = {
   "--code-container-overlay-opacity": "0.58",
 } as const satisfies ThemeCssVariables;
 
+/** SourceShot's own token categories. `code-highlight.ts` maps the highlighter's scopes onto them. */
+export type CodeTokenType =
+  | "text"
+  | "variable"
+  | "property"
+  | "attribute"
+  | "heading"
+  | "comment"
+  | "keyword"
+  | "tag"
+  | "deleted"
+  | "operator"
+  | "punctuation"
+  | "type"
+  | "function"
+  | "string"
+  | "regex"
+  | "entity"
+  | "inserted"
+  | "number"
+  | "boolean"
+  | "null";
+
 export type CodeTokenStyle = { color: string; bold: boolean; italic: boolean };
 
 export type CodeThemeDefinition = {
@@ -147,7 +168,7 @@ export type CodeThemeDefinition = {
   type: "light" | "dark";
   foreground: string;
   background: string;
-  tokens: Readonly<Record<TokenType, CodeTokenStyle>>;
+  tokens: Readonly<Record<CodeTokenType, CodeTokenStyle>>;
 };
 
 function createCodeTheme({

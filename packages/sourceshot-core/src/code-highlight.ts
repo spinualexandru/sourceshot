@@ -1,4 +1,4 @@
-import type { Language, Token } from "@vortexlabs/kirari/core";
+import type { Lang, Theme } from "@pierre/highlights";
 import {
   type AppTheme,
   type CodeLanguage,
@@ -8,7 +8,7 @@ import {
 import { resolveCodeLanguage } from "./language-detection.ts";
 import {
   type CodeThemeDefinition,
-  type CodeTokenStyle,
+  type CodeTokenType,
   customCodeThemes,
 } from "./theme-definitions.ts";
 
@@ -22,139 +22,119 @@ export type ThemedToken = {
 
 export type TokensResult = { tokens: ThemedToken[][]; fg: string; bg: string };
 
-let fencedMarkdownPromise: Promise<Language> | undefined;
-
 /**
- * Markdown highlights fenced code (```ts, ```py, ...) in its own language. Fence tags can
- * name any grammar, so this loads them all, but only when Markdown is being rendered.
- * Unknown or untagged fences stay a single string token.
+ * Highlights styles Zed scopes. A scope without an entry inherits from its parent
+ * (`keyword.control` from `keyword`), so only roots and the children that land in a
+ * different SourceShot category are listed.
  */
-function getFencedMarkdown() {
-  fencedMarkdownPromise ??= Promise.all([
-    import("@vortexlabs/kirari/languages"),
-    import("@vortexlabs/kirari/registry"),
-    import("@vortexlabs/kirari/markdown"),
-  ]).then(([languages, { createRegistry }, { createMarkdown }]) =>
-    createMarkdown(createRegistry(Object.values(languages))),
-  );
-  return fencedMarkdownPromise;
-}
+const scopeTokenTypes = {
+  attribute: "attribute",
+  boolean: "boolean",
+  comment: "comment",
+  constant: "null",
+  constructor: "type",
+  "diff.minus": "deleted",
+  "diff.plus": "inserted",
+  embedded: "text",
+  emphasis: "text",
+  "emphasis.strong": "heading",
+  enum: "type",
+  function: "function",
+  hint: "comment",
+  keyword: "keyword",
+  // JSDoc tags stay part of their comment.
+  "keyword.jsdoc": "comment",
+  label: "variable",
+  link_text: "string",
+  link_uri: "entity",
+  namespace: "type",
+  number: "number",
+  operator: "operator",
+  predictive: "comment",
+  preproc: "keyword",
+  primary: "text",
+  property: "property",
+  punctuation: "punctuation",
+  selector: "tag",
+  string: "string",
+  "string.escape": "entity",
+  "string.regex": "regex",
+  tag: "tag",
+  text: "text",
+  "text.literal": "string",
+  title: "heading",
+  type: "type",
+  "type.jsdoc": "comment",
+  variable: "variable",
+  "variable.jsdoc": "comment",
+  "variable.special": "keyword",
+  variant: "null",
+} as const satisfies Record<string, CodeTokenType>;
 
-/** One dynamic import per grammar, so the website only fetches the language it renders. */
-const languageLoaders: Record<SyntaxLanguage, () => Promise<Language>> = {
-  c: () => import("@vortexlabs/kirari/languages/c").then((module) => module.c),
-  clojure: () => import("@vortexlabs/kirari/languages/clojure").then((module) => module.clojure),
-  cpp: () => import("@vortexlabs/kirari/languages/cpp").then((module) => module.cpp),
-  csharp: () => import("@vortexlabs/kirari/languages/csharp").then((module) => module.csharp),
-  css: () => import("@vortexlabs/kirari/languages/css").then((module) => module.css),
-  dart: () => import("@vortexlabs/kirari/languages/dart").then((module) => module.dart),
-  diff: () => import("@vortexlabs/kirari/languages/diff").then((module) => module.diff),
-  dockerfile: () =>
-    import("@vortexlabs/kirari/languages/dockerfile").then((module) => module.dockerfile),
-  dotenv: () => import("@vortexlabs/kirari/languages/dotenv").then((module) => module.dotenv),
-  elixir: () => import("@vortexlabs/kirari/languages/elixir").then((module) => module.elixir),
-  glsl: () => import("@vortexlabs/kirari/languages/glsl").then((module) => module.glsl),
-  go: () => import("@vortexlabs/kirari/languages/go").then((module) => module.go),
-  graphql: () => import("@vortexlabs/kirari/languages/graphql").then((module) => module.graphql),
-  groovy: () => import("@vortexlabs/kirari/languages/groovy").then((module) => module.groovy),
-  hcl: () => import("@vortexlabs/kirari/languages/hcl").then((module) => module.hcl),
-  html: () => import("@vortexlabs/kirari/languages/html").then((module) => module.html),
-  ini: () => import("@vortexlabs/kirari/languages/ini").then((module) => module.ini),
-  java: () => import("@vortexlabs/kirari/languages/java").then((module) => module.java),
-  javascript: () =>
-    import("@vortexlabs/kirari/languages/javascript").then((module) => module.javascript),
-  json: () => import("@vortexlabs/kirari/languages/json").then((module) => module.json),
-  jsonc: () => import("@vortexlabs/kirari/languages/jsonc").then((module) => module.jsonc),
-  jsx: () => import("@vortexlabs/kirari/languages/jsx").then((module) => module.jsx),
-  julia: () => import("@vortexlabs/kirari/languages/julia").then((module) => module.julia),
-  kotlin: () => import("@vortexlabs/kirari/languages/kotlin").then((module) => module.kotlin),
-  lua: () => import("@vortexlabs/kirari/languages/lua").then((module) => module.lua),
-  makefile: () => import("@vortexlabs/kirari/languages/makefile").then((module) => module.makefile),
-  markdown: () => getFencedMarkdown(),
-  nginx: () => import("@vortexlabs/kirari/languages/nginx").then((module) => module.nginx),
-  php: () => import("@vortexlabs/kirari/languages/php").then((module) => module.php),
-  plaintext: () =>
-    import("@vortexlabs/kirari/languages/plaintext").then((module) => module.plaintext),
-  powershell: () =>
-    import("@vortexlabs/kirari/languages/powershell").then((module) => module.powershell),
-  protobuf: () => import("@vortexlabs/kirari/languages/protobuf").then((module) => module.protobuf),
-  python: () => import("@vortexlabs/kirari/languages/python").then((module) => module.python),
-  r: () => import("@vortexlabs/kirari/languages/r").then((module) => module.r),
-  ruby: () => import("@vortexlabs/kirari/languages/ruby").then((module) => module.ruby),
-  rust: () => import("@vortexlabs/kirari/languages/rust").then((module) => module.rust),
-  scala: () => import("@vortexlabs/kirari/languages/scala").then((module) => module.scala),
-  shell: () => import("@vortexlabs/kirari/languages/shell").then((module) => module.shell),
-  sql: () => import("@vortexlabs/kirari/languages/sql").then((module) => module.sql),
-  svelte: () => import("@vortexlabs/kirari/languages/svelte").then((module) => module.svelte),
-  swift: () => import("@vortexlabs/kirari/languages/swift").then((module) => module.swift),
-  toml: () => import("@vortexlabs/kirari/languages/toml").then((module) => module.toml),
-  tsx: () => import("@vortexlabs/kirari/languages/tsx").then((module) => module.tsx),
-  typescript: () =>
-    import("@vortexlabs/kirari/languages/typescript").then((module) => module.typescript),
-  vue: () => import("@vortexlabs/kirari/languages/vue").then((module) => module.vue),
-  xml: () => import("@vortexlabs/kirari/languages/xml").then((module) => module.xml),
-  yaml: () => import("@vortexlabs/kirari/languages/yaml").then((module) => module.yaml),
-  zig: () => import("@vortexlabs/kirari/languages/zig").then((module) => module.zig),
-};
+const highlightThemes = new Map<CodeThemeDefinition, Theme>();
 
-let tokenizePromise: Promise<(source: string, language: Language) => Token[]> | undefined;
+/** Translates a SourceShot code theme into the Zed-style theme Highlights consumes. */
+function toHighlightTheme(theme: CodeThemeDefinition): Theme {
+  let highlightTheme = highlightThemes.get(theme);
 
-function getTokenize() {
-  tokenizePromise ??= import("@vortexlabs/kirari/core").then((module) => module.tokenize);
-  return tokenizePromise;
-}
+  if (!highlightTheme) {
+    const syntax = Object.fromEntries(
+      Object.entries(scopeTokenTypes).map(([scope, type]) => {
+        const { bold, color, italic } = theme.tokens[type];
+        return [
+          scope,
+          { color, font_style: italic ? "italic" : "normal", font_weight: bold ? 700 : 400 },
+        ];
+      }),
+    );
 
-function tokenStyle(theme: CodeThemeDefinition, type: string): CodeTokenStyle | undefined {
-  return Object.hasOwn(theme.tokens, type)
-    ? theme.tokens[type as keyof CodeThemeDefinition["tokens"]]
-    : undefined;
-}
-
-/**
- * Kirari returns one flat token list, and a block comment or template string is a
- * single token spanning several lines. Renderers lay out line by line, so split every
- * token at its newlines.
- */
-function toThemedLines(tokens: readonly Token[], theme: CodeThemeDefinition) {
-  const lines: ThemedToken[][] = [[]];
-
-  for (const token of tokens) {
-    const style = tokenStyle(theme, token.type);
-    const parts = token.value.split("\n");
-    let offset = token.start;
-
-    parts.forEach((content, index) => {
-      if (index > 0) {
-        lines.push([]);
-        offset += 1;
-      }
-
-      if (content) {
-        lines[lines.length - 1].push({
-          content,
-          offset,
-          color: style?.color,
-          bold: style?.bold,
-          italic: style?.italic,
-        });
-      }
-
-      offset += content.length;
-    });
+    highlightTheme = {
+      name: theme.name,
+      appearance: theme.type,
+      style: {
+        "editor.foreground": theme.foreground,
+        "editor.background": theme.background,
+        syntax,
+      },
+    };
+    highlightThemes.set(theme, highlightTheme);
   }
 
-  return lines;
+  return highlightTheme;
+}
+
+/** SourceShot's language values are all Highlights language names. */
+function toHighlightLanguage(language: SyntaxLanguage): Lang {
+  return language;
+}
+
+/** Highlights instantiates its WebAssembly on import, so the website loads it on first use. */
+let highlightsPromise: Promise<typeof import("@pierre/highlights")> | undefined;
+
+function getHighlights() {
+  highlightsPromise ??= import("@pierre/highlights");
+  return highlightsPromise;
 }
 
 async function highlight(code: string, language: CodeLanguage, theme: AppTheme) {
   const source = code || " ";
-  const [tokenize, grammar] = await Promise.all([
-    getTokenize(),
-    languageLoaders[resolveCodeLanguage(source, language)](),
-  ]);
+  const { codeToTokens } = await getHighlights();
   const codeTheme = customCodeThemes[getThemeOption(theme).codeTheme];
+  const { tokens } = codeToTokens(source, {
+    lang: toHighlightLanguage(resolveCodeLanguage(source, language)),
+    theme: toHighlightTheme(codeTheme),
+  });
+  const lines = tokens.map((line) =>
+    line.map(({ color, content, fontStyle = 0, offset }): ThemedToken => ({
+      content,
+      offset,
+      color,
+      bold: (fontStyle & 2) !== 0,
+      italic: (fontStyle & 1) !== 0,
+    })),
+  );
 
-  return { codeTheme, lines: toThemedLines(tokenize(source, grammar), codeTheme) };
+  return { codeTheme, lines };
 }
 
 function escapeHtml(text: string) {

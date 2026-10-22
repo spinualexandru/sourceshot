@@ -1,15 +1,8 @@
 import { languageOptions, syntaxLanguageOptions } from "@sourceshot/core";
-import * as languages from "@vortexlabs/kirari/languages";
 import { describe, expect, it } from "vite-plus/test";
 import { inferLanguage } from "./infer-language.ts";
 
 describe("syntaxLanguageOptions", () => {
-  it("offers exactly the languages kirari ships", () => {
-    const values = syntaxLanguageOptions.map((option) => option.value).toSorted();
-
-    expect(values).toEqual(Object.keys(languages).toSorted());
-  });
-
   it("lists Auto first, then the rest sorted by label", () => {
     const labels = syntaxLanguageOptions.map((option) => option.label);
     const sorted = labels.toSorted((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
@@ -31,9 +24,11 @@ describe("inferLanguage", () => {
   it("falls back to auto for unknown files", () => {
     expect(inferLanguage("auto", "photo.png")).toBe("auto");
     expect(inferLanguage("auto", "README")).toBe("auto");
+    expect(inferLanguage("auto", ".env")).toBe("auto");
   });
 
-  it.each(syntaxLanguageOptions.filter((option) => option.value !== "nginx"))(
+  // `.m` is Objective-C's, so MATLAB is only ever picked explicitly or by alias.
+  it.each(syntaxLanguageOptions.filter((option) => option.value !== "matlab"))(
     "maps the .$extension extension to $value",
     ({ extension, value }) => {
       expect(inferLanguage("auto", `src/sample.${extension}`)).toBe(value);
@@ -58,6 +53,15 @@ describe("inferLanguage", () => {
     ["fix.patch", "diff"],
     ["icon.svg", "xml"],
     ["SHADER.FRAG", "glsl"],
+    ["view.m", "objc"],
+    ["view.mm", "objc"],
+    ["types.mli", "ocaml"],
+    ["boot.s", "asm"],
+    ["kernel.cuh", "cuda"],
+    ["main.tscn", "gdresource"],
+    ["legacy.f77", "fortran-fixed-form"],
+    ["src/app/app.component.html", "angular-html"],
+    ["page.html", "html"],
   ] as const)("maps %s to %s", (file, language) => {
     expect(inferLanguage("auto", file)).toBe(language);
   });
@@ -67,11 +71,10 @@ describe("inferLanguage", () => {
     ["deploy/Dockerfile.prod", "dockerfile"],
     ["Makefile", "makefile"],
     ["GNUmakefile", "makefile"],
-    [".env", "dotenv"],
-    [".env.local", "dotenv"],
-    ["/etc/nginx/nginx.conf", "nginx"],
     ["Gemfile", "ruby"],
     ["Rakefile", "ruby"],
+    ["CMakeLists.txt", "cmake"],
+    ["Containerfile", "dockerfile"],
   ] as const)("maps the well-known filename %s to %s", (file, language) => {
     expect(inferLanguage("auto", file)).toBe(language);
   });

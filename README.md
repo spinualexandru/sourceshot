@@ -10,18 +10,22 @@ Live site: https://spinualexandru.github.io/sourceshot
 
 ## Features
 
-- Syntax highlighting with automatic language detection
-- Manual selection from every language [kirari](https://kirari.sh) supports (see below)
+- Syntax highlighting by [Highlights](https://diffs.com/docs#highlights) from Pierre, with
+  automatic language detection
+- Manual selection from every supported language (see below)
 - One-click PNG export
 - Hash-based snapshot rendering for generated links
 - A CLI that renders the same snapshots without a browser
 
 ## Supported languages
 
-C, C#, C++, Clojure, CSS, Dart, Diff, Dockerfile, Dotenv, Elixir, GLSL, Go, GraphQL, Groovy,
-HCL, HTML, INI, Java, JavaScript, JSON, JSONC, JSX, Julia, Kotlin, Lua, Makefile, Markdown,
-Nginx, PHP, Plain text, PowerShell, Protocol Buffers, Python, R, Ruby, Rust, Scala, Shell, SQL,
-Svelte, Swift, TOML, TSX, TypeScript, Vue, XML, YAML and Zig.
+Angular HTML, Assembly, Astro, Batch, C, C#, C++, C3, Clojure, CMake, CSS, CUDA, Dart, Diff,
+Dockerfile, Elixir, Elm, Erlang, F#, Fortran, Fortran (fixed form), GDScript, Gleam, GLSL, Go,
+Godot Resource, Godot Shader, GraphQL, Groovy, Haskell, HCL, HLSL, HTML, Java, JavaScript, JSON,
+JSON Lines, JSON5, JSONC, JSX, Julia, Kotlin, LaTeX, Less, Lisp, Lua, Makefile, Markdown,
+MATLAB, MDX, Nim, Nix, Objective-C, OCaml, Pascal, Perl, PHP, Plain text, PowerShell,
+Protocol Buffers, Python, R, Ruby, Rust, Sass, Scala, SCSS, Shell, Solidity, SQL, Svelte, Swift,
+TOML, TSRX, TSX, TypeScript, Vue, WebAssembly Text, WGSL, XML, YAML and Zig.
 
 Automatic detection from the code itself recognizes TypeScript, JavaScript, TSX, JSX, Python,
 Go, Rust, HTML, CSS, JSON and Markdown. Pick any other language explicitly, with the language
@@ -69,7 +73,7 @@ node apps/sourceshot-cli/dist/index.js sample.ts --stdout | wl-copy
 | `--debug-svg <path>`     | Also write the intermediate SVG.                                                 |
 
 Language is inferred from the file extension or a well-known filename (`Dockerfile`, `Makefile`,
-`.env`, `nginx.conf`) first, then from the content.
+`Gemfile`, `CMakeLists.txt`) first, then from the content.
 Exit codes: `0` success, `1` render failure, `2` usage or invalid input, `3` environment
 problem such as a missing clipboard helper.
 

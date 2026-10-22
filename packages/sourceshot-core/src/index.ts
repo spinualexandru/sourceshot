@@ -21,6 +21,7 @@ export {
   type AppThemeValue,
   type CodeThemeDefinition,
   type CodeThemeName,
+  type CodeTokenType,
   type CodeTokenStyle,
   type ThemeCssVariables,
   appThemeDefinitions,

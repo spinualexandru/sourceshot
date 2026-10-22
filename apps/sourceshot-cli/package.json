@@ -25,7 +25,6 @@
   "dependencies": {
     "@resvg/resvg-js": "catalog:",
     "@sourceshot/core": "workspace:*",
-    "@vortexlabs/kirari": "catalog:",
     "commander": "catalog:",
     "satori": "catalog:"
   },

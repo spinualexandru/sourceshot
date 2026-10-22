@@ -25,7 +25,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@vortexlabs/kirari": "catalog:"
+    "@pierre/highlights": "catalog:"
   },
   "devDependencies": {
     "typescript": "catalog:"
