@@ -5,21 +5,23 @@ packages:
 catalogMode: prefer
 
 catalog:
-  "@types/node": ^26.2.0
+  "@types/node": ^26.6.5
   commander: ^15.0.0
   "@resvg/resvg-js": ^2.6.2
   typescript: ^7.0.2
-  vite: npm:@voidzero-dev/vite-plus-core@1.3.0
-  vite-plus: 1.3.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
   "@pierre/highlights": ^0.2.0
   html-to-image: ^1.11.13
   lit: ^3.3.3
-  prettier: ^3.9.6
-  lucide: ^1.31.0
-  satori: ^0.29.0
-  "@types/react": ^19.2.18
+  prettier: ^3.9.10
+  lucide: ^1.61.0
+  satori: ^0.63.2
+  "@types/react": ^19.3.0
 overrides:
   vite@*: "catalog:"
+  # Satori and opentype pin an affected release: GHSA-px8p-9vwx-vf98.
+  "fflate@>=0.7.0 <0.7.5": ^0.7.5
 peerDependencyRules:
   allowAny:
     - vite
